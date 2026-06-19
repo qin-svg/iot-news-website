@@ -49,8 +49,35 @@
             background: rgba(255,255,255,0.08); color: #fff;
             font-size: 15px; outline: none; transition: border-color 0.3s;
         }
+        /* 动态表单内的 input/select/textarea 覆盖为浅色主题 */
+        #content-area .form-group input,
+        #content-area .form-group select,
+        #content-area .form-group textarea,
+        .content-area .form-group input,
+        .content-area .form-group select,
+        .content-area .form-group textarea {
+            background: #fafafa !important;
+            color: #333 !important;
+            border: 1px solid #d9d9d9 !important;
+        }
+        .content-area .form-group input::placeholder,
+        .content-area .form-group textarea::placeholder {
+            color: #bbb !important;
+        }
+        .content-area .form-group label {
+            color: #333 !important;
+        }
+        .content-area .form-group select option {
+            background: #fff !important;
+            color: #333 !important;
+        }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: #00b4ff;
+        }
+        .content-area .form-group input:focus,
+        .content-area .form-group select:focus,
+        .content-area .form-group textarea:focus {
+            border-color: #0066ff !important;
         }
         .form-group input::placeholder, .form-group textarea::placeholder {
             color: rgba(255,255,255,0.3);
