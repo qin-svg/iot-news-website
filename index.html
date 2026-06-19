@@ -544,33 +544,7 @@
 </section>
 
 <!-- ========== 页脚 ========== -->
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-col">
-            <h3>&#9776; IoT资讯</h3>
-            <p>物联网工程专业门户平台<br>连接万物，智创未来</p>
-        </div>
-        <div class="footer-col">
-            <h3>快速导航</h3>
-            <a href="#news" onclick="scrollTo('news');return false;">行业资讯</a>
-            <a href="#tech" onclick="scrollTo('tech');return false;">技术干货</a>
-            <a href="#projects" onclick="scrollTo('projects');return false;">项目案例</a>
-            <a href="#resources" onclick="scrollTo('resources');return false;">学习资源</a>
-        </div>
-        <div class="footer-col">
-            <h3>关于我们</h3>
-            <a href="#about" onclick="scrollTo('about');return false;">平台介绍</a>
-            <a href="#contact" onclick="scrollTo('contact');return false;">联系我们</a>
-        </div>
-        <div class="footer-col">
-            <h3>管理入口</h3>
-            <a class="footer-admin-link" href="admin.html">&#9881; 管理员登录</a>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2025 IoT资讯. All rights reserved.</p>
-    </div>
-</footer>
+<footer class="footer" id="footer"></footer>
 
 <!-- ========== 详情浮层 ========== -->
 <div class="detail-overlay" id="detailOverlay" onclick="closeDetailOutside(event)">
@@ -895,6 +869,9 @@ function renderAllSections() {
     // 渲染联系信息
     renderContact(cfg);
 
+    // 渲染页脚
+    renderFooter(cfg);
+
     // 启动 Canvas 科技艺术
     startTechArt();
 }
@@ -1023,12 +1000,56 @@ function renderNav(cfg) {
 }
 
 // ============================================================
+//  页脚渲染（动态生成快速导航）
+// ============================================================
+function renderFooter(cfg) {
+    const siteName = cfg.siteName || 'IoT资讯';
+    let html = '<div class="footer-container">';
+
+    // 第一列：网站信息
+    html += `<div class="footer-col"><h3>&#9776; ${escapeHtml(siteName)}</h3>
+        <p>物联网工程专业门户平台<br>连接万物，智创未来</p></div>`;
+
+    // 第二列：快速导航（根据管理员配置动态生成）
+    html += '<div class="footer-col"><h3>快速导航</h3>';
+    const cats = [
+        {id:'news', label:'行业资讯'},
+        {id:'tech', label:'技术干货'},
+        {id:'projects', label:'项目案例'},
+        {id:'resources', label:'学习资源'}
+    ];
+    cats.forEach(c => { html += `<a href="#${c.id}" onclick="scrollTo('${c.id}');return false;">${c.label}</a>`; });
+    if (cfg.videos && cfg.videos.length > 0) {
+        html += '<a href="#video" onclick="scrollTo(\'video\');return false;">视频展示</a>';
+    }
+    (cfg.customSections || []).forEach(sec => {
+        html += `<a href="#custom-${sec.id}" onclick="scrollTo('custom-${sec.id}');return false;">${escapeHtml(sec.title || '区块')}</a>`;
+    });
+    html += '</div>';
+
+    // 第三列：关于我们
+    html += '<div class="footer-col"><h3>关于我们</h3>';
+    html += '<a href="#about" onclick="scrollTo(\'about\');return false;">平台介绍</a>';
+    html += '<a href="#contact" onclick="scrollTo(\'contact\');return false;">联系我们</a>';
+    html += '</div>';
+
+    // 第四列：管理入口
+    html += '<div class="footer-col"><h3>管理入口</h3>';
+    html += '<a class="footer-admin-link" href="admin.html">&#9881; 管理员登录</a></div>';
+
+    html += '</div>';
+    html += `<div class="footer-bottom"><p>&copy; ${new Date().getFullYear()} ${escapeHtml(siteName)}. All rights reserved.</p></div>`;
+    document.getElementById('footer').innerHTML = html;
+}
+
+// ============================================================
 //  滚动导航
 // ============================================================
 function scrollTo(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.getElementById('navLinks').classList.remove('open');
+    const nav = document.getElementById('navLinks');
+    if (nav) nav.classList.remove('open');
 }
 
 function toggleMobileMenu() {
