@@ -5,42 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IoT资讯 - 物联网工程专业门户</title>
     <style>
-        /* ========== 全局重置与基础样式 ========== */
+        /* ========== 全局重置 ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
                          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
             background: #f0f2f5;
             color: #333;
             line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
         a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
 
-        /* ========== 顶部导航栏 ========== */
+        /* ========== 导航栏 ========== */
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            background: rgba(10, 22, 40, 0.92);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 2px 16px rgba(0,0,0,0.25);
             transition: all 0.3s ease;
         }
-        .navbar.scrolled {
-            background: rgba(10, 22, 40, 0.95);
-            backdrop-filter: blur(10px);
-        }
         .nav-container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 40px;
             height: 64px;
         }
         .nav-logo {
@@ -48,7 +43,7 @@
             align-items: center;
             gap: 10px;
             color: #fff;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: 1px;
         }
@@ -62,13 +57,10 @@
             justify-content: center;
             font-size: 18px;
         }
-        .nav-links {
-            display: flex;
-            gap: 4px;
-        }
+        .nav-links { display: flex; gap: 4px; }
         .nav-links a {
             color: rgba(255,255,255,0.8);
-            padding: 8px 16px;
+            padding: 8px 18px;
             border-radius: 6px;
             transition: all 0.3s;
             font-size: 15px;
@@ -79,7 +71,6 @@
             color: #fff;
             background: rgba(0, 180, 255, 0.2);
         }
-        /* 移动端汉堡菜单 */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -94,7 +85,7 @@
             transition: all 0.3s;
         }
 
-        /* ========== 滚动指示器 ========== */
+        /* ========== 滚动进度条 ========== */
         .scroll-indicator {
             position: fixed;
             top: 64px;
@@ -105,35 +96,52 @@
             transition: width 0.1s linear;
         }
 
-        /* ========== Hero Banner（全屏首屏）========== */
-        .hero {
-            height: 100vh;
+        /* ========== 全屏区块（每个区块占满100vh）========== */
+        .full-section {
+            width: 100%;
+            min-height: 100vh;
             position: relative;
             overflow: hidden;
-            background: #0a1628;
         }
-        .hero-bg {
+
+        /* ========== Hero 首屏 ========== */
+        .hero {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-bg-image {
             position: absolute;
             inset: 0;
-            background:
-                radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 50%, rgba(0,102,255,0.15) 0%, transparent 60%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.1s linear;
         }
-        /* 粒子背景装饰 */
+        .hero-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.65);
+        }
         .hero-particles {
             position: absolute;
             inset: 0;
             overflow: hidden;
+            z-index: 1;
         }
         .particle {
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(0, 212, 255, 0.4);
+            background: rgba(0, 212, 255, 0.5);
             border-radius: 50%;
-            animation: float-particle linear infinite;
+            animation: floatParticle linear infinite;
         }
-        @keyframes float-particle {
+        @keyframes floatParticle {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
@@ -142,11 +150,6 @@
         .hero-content {
             position: relative;
             z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
             color: #fff;
             padding: 0 20px;
@@ -163,8 +166,9 @@
         .hero-content p {
             font-size: 20px;
             opacity: 0;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.9);
             max-width: 650px;
+            margin: 0 auto;
             text-shadow: 0 1px 10px rgba(0,0,0,0.5);
             animation: fadeUp 0.8s 0.6s forwards;
         }
@@ -173,16 +177,14 @@
             bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.6);
             font-size: 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            z-index: 2;
             animation: bounce 2s infinite;
-        }
-        .hero-scroll-hint .arrow {
-            font-size: 24px;
         }
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -193,97 +195,112 @@
             50% { transform: translateX(-50%) translateY(10px); }
         }
 
-        /* ========== 通用区块样式 ========== */
-        .section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
-        .section-alt { background: #fff; }
-        .section-header {
+        /* ========== 分类区块（独立页面样式）========== */
+        .category-section {
+            width: 100%;
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 36px;
-        }
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a2a4a;
+            flex-direction: column;
             position: relative;
-            padding-left: 16px;
         }
-        .section-title::before {
-            content: '';
+        .category-bg {
             position: absolute;
-            left: 0;
-            top: 4px;
-            bottom: 4px;
-            width: 4px;
-            background: linear-gradient(180deg, #00d4ff, #0066ff);
-            border-radius: 2px;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
         }
-        .section-subtitle {
-            font-size: 14px;
-            color: #999;
-            margin-top: 4px;
-            padding-left: 16px;
+        .category-bg-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
         }
-        .section-more {
-            color: #0066ff;
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.3s;
+        .category-section.light .category-bg-overlay {
+            background: rgba(240, 242, 245, 0.92);
         }
-        .section-more:hover { color: #0044cc; }
+        .category-section.dark .category-bg-overlay {
+            background: rgba(10, 22, 40, 0.88);
+        }
+        .category-inner {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px 40px 60px;
+        }
+        .category-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .category-header h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .category-header.light h2 { color: #1a2a4a; }
+        .category-header.dark h2 { color: #fff; }
+        .category-header p {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+        .category-header.light p { color: #666; }
+        .category-header.dark p { color: rgba(255,255,255,0.7); }
 
-        /* ========== 卡片 ========== */
+        /* ========== 卡片网格 ========== */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
         .card {
             background: #fff;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            transition: all 0.35s ease;
             cursor: pointer;
         }
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.12);
         }
         .card-cover {
             width: 100%;
-            height: 170px;
-            object-fit: cover;
+            height: 200px;
+            overflow: hidden;
             background: linear-gradient(135deg, #e8f0fe, #d0e3ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6699cc;
-            font-size: 40px;
         }
-        .card-body { padding: 18px; }
+        .card-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-body { padding: 20px; }
         .card-tag {
             display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
+            padding: 3px 12px;
+            border-radius: 14px;
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .tag-news { background: #e6f7ff; color: #0066cc; }
         .tag-tech { background: #f6ffed; color: #389e0d; }
         .tag-project { background: #fff7e6; color: #d46b08; }
         .tag-resource { background: #f9f0ff; color: #722ed1; }
         .card-title {
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: #1a2a4a;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -291,96 +308,171 @@
             line-height: 1.5;
         }
         .card-desc {
-            font-size: 13px;
+            font-size: 14px;
             color: #888;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            line-height: 1.6;
         }
         .card-meta {
-            font-size: 12px;
-            color: #aaa;
+            font-size: 13px;
+            color: #bbb;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        /* ========== 滚动动画 ========== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
+        /* 暗色卡片 */
+        .card-dark {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
+        .card-dark .card-title { color: #fff; }
+        .card-dark .card-desc { color: rgba(255,255,255,0.7); }
+        .card-dark .card-meta { color: rgba(255,255,255,0.5); }
 
-        /* ========== 分类锚点区块（列表页变为滚动区块）========== */
-        .category-anchor {
-            padding-top: 20px;
-        }
-        .category-anchor .section-header { margin-bottom: 32px; }
-
-        /* ========== 关于我们区块 ========== */
+        /* ========== 关于我们 ========== */
         .about-section {
-            background: #fff;
-            border-radius: 16px;
-            padding: 48px 40px;
-            margin: 0 auto;
-            max-width: 900px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            position: relative;
         }
-        .about-section h1 {
-            font-size: 32px;
+        .about-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .about-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.93);
+        }
+        .about-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            width: 100%;
+        }
+        .about-inner h1 {
+            font-size: 36px;
             color: #1a2a4a;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-align: center;
         }
-        .about-section p {
+        .about-inner p {
             font-size: 16px;
             color: #555;
-            line-height: 1.9;
+            line-height: 2;
             margin-bottom: 16px;
             text-indent: 2em;
         }
         .about-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
-            margin-top: 32px;
+            margin-top: 36px;
         }
         .about-feature {
             text-align: center;
-            padding: 24px 16px;
+            padding: 28px 16px;
             background: #f8faff;
-            border-radius: 12px;
+            border-radius: 14px;
+            transition: transform 0.3s;
         }
+        .about-feature:hover { transform: translateY(-4px); }
         .about-feature .icon { font-size: 36px; margin-bottom: 12px; }
         .about-feature h3 { font-size: 16px; color: #1a2a4a; margin-bottom: 6px; }
-        .about-feature p { font-size: 13px; color: #888; text-indent: 0; }
+        .about-feature p { font-size: 13px; color: #888; text-indent: 0; margin-bottom: 0; }
+
+        /* ========== 联系我们 ========== */
+        .contact-section {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            position: relative;
+        }
+        .contact-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .contact-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 22, 40, 0.85);
+        }
+        .contact-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+        }
+        .contact-inner h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        .contact-inner .contact-sub {
+            font-size: 16px;
+            opacity: 0.7;
+            margin-bottom: 48px;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 28px;
+        }
+        .contact-item {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 32px 20px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .contact-item:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.12);
+        }
+        .contact-item .c-icon { font-size: 40px; margin-bottom: 16px; }
+        .contact-item h3 { font-size: 16px; margin-bottom: 8px; color: #00d4ff; }
+        .contact-item p { font-size: 14px; opacity: 0.8; line-height: 1.6; }
 
         /* ========== 页脚 ========== */
         .footer {
-            background: linear-gradient(135deg, #0a1628, #1a2a4a);
-            color: rgba(255,255,255,0.7);
-            margin-top: auto;
+            background: #0a1628;
+            color: rgba(255,255,255,0.6);
         }
         .footer-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 40px 40px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 32px;
         }
-        .footer-col h3 { color: #fff; font-size: 16px; margin-bottom: 16px; }
+        .footer-col h3 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
         .footer-col p { font-size: 14px; line-height: 1.8; }
         .footer-col a {
             display: block;
@@ -392,16 +484,16 @@
         .footer-bottom {
             border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
-            padding: 16px 20px;
+            padding: 16px 40px;
             font-size: 13px;
         }
         .footer-admin-link {
-            color: rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.2);
             font-size: 12px;
             cursor: pointer;
             transition: color 0.3s;
         }
-        .footer-admin-link:hover { color: rgba(255,255,255,0.6); }
+        .footer-admin-link:hover { color: rgba(255,255,255,0.5); }
 
         /* ========== Toast ========== */
         .toast {
@@ -421,17 +513,16 @@
         }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* ========== 详情浮层（滚动模式下用 overlay 代替页面切换）========== */
+        /* ========== 详情浮层 ========== */
         .detail-overlay {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 2000;
-            background: rgba(0,0,0,0.5);
-            align-items: flex-start;
+            background: rgba(0,0,0,0.6);
+            align-items: center;
             justify-content: center;
-            overflow-y: auto;
-            padding: 80px 20px 40px;
+            padding: 20px;
         }
         .detail-overlay.active { display: flex; }
         .detail-panel {
@@ -439,10 +530,12 @@
             border-radius: 16px;
             max-width: 800px;
             width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
             padding: 40px;
             position: relative;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: fadeUp 0.4s ease;
+            animation: fadeUp 0.3s ease;
         }
         .detail-close {
             position: absolute;
@@ -461,17 +554,6 @@
             transition: background 0.2s;
         }
         .detail-close:hover { background: #e8e8e8; }
-        .detail-back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #0066ff;
-            cursor: pointer;
-            font-size: 14px;
-            margin-bottom: 16px;
-            transition: color 0.3s;
-        }
-        .detail-back-link:hover { color: #0044cc; }
         .detail-category {
             display: inline-block;
             padding: 4px 14px;
@@ -496,7 +578,7 @@
         }
         .detail-cover-img {
             width: 100%;
-            max-height: 400px;
+            max-height: 360px;
             object-fit: cover;
             border-radius: 12px;
             margin-bottom: 28px;
@@ -507,6 +589,7 @@
             color: #444;
         }
         .detail-content p { margin-bottom: 16px; }
+        .detail-content h3 { margin: 24px 0 12px; color: #1a2a4a; }
 
         /* ========== 响应式 ========== */
         @media (max-width: 768px) {
@@ -523,14 +606,20 @@
                 padding: 12px 20px;
                 gap: 4px;
             }
+            .nav-container { padding: 0 16px; }
             .hero-content h1 { font-size: 32px; }
             .hero-content p { font-size: 16px; }
-            .section { padding: 48px 16px; }
-            .section-title { font-size: 22px; }
-            .card-grid { grid-template-columns: 1fr; }
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .category-inner { padding: 72px 20px 48px; }
+            .category-header h2 { font-size: 28px; }
+            .about-section, .contact-section { padding: 60px 20px; }
+            .about-inner h1, .contact-inner h1 { font-size: 28px; }
+            .footer-container { padding: 32px 20px; }
             .detail-panel { padding: 24px 20px; }
             .detail-title { font-size: 22px; }
-            .about-section { padding: 28px 20px; }
         }
         @media (max-width: 480px) {
             .hero-content h1 { font-size: 26px; }
@@ -553,12 +642,13 @@
             <span>IoT资讯</span>
         </div>
         <div class="nav-links" id="navLinks">
-            <a data-target="hero" class="active" onclick="scrollToSection('hero')">首页</a>
-            <a data-target="news" onclick="scrollToSection('news')">行业资讯</a>
-            <a data-target="tech" onclick="scrollToSection('tech')">技术干货</a>
-            <a data-target="projects" onclick="scrollToSection('projects')">项目案例</a>
-            <a data-target="resources" onclick="scrollToSection('resources')">学习资源</a>
-            <a data-target="about" onclick="scrollToSection('about')">关于我们</a>
+            <a data-target="hero" class="active" onclick="scrollTo('hero')">首页</a>
+            <a data-target="news" onclick="scrollTo('news')">行业资讯</a>
+            <a data-target="tech" onclick="scrollTo('tech')">技术干货</a>
+            <a data-target="projects" onclick="scrollTo('projects')">项目案例</a>
+            <a data-target="resources" onclick="scrollTo('resources')">学习资源</a>
+            <a data-target="contact" onclick="scrollTo('contact')">联系我们</a>
+            <a data-target="about" onclick="scrollTo('about')">关于我们</a>
         </div>
         <div class="hamburger" onclick="toggleMobileMenu()">
             <span></span><span></span><span></span>
@@ -567,8 +657,9 @@
 </nav>
 
 <!-- ========== Hero 首屏 ========== -->
-<section class="hero" id="hero">
-    <div class="hero-bg"></div>
+<section class="full-section hero" id="hero">
+    <div class="hero-bg-image" id="heroBgImg"></div>
+    <div class="hero-bg-overlay"></div>
     <div class="hero-particles" id="heroParticles"></div>
     <div class="hero-content">
         <h1>探索物联网的无限可能</h1>
@@ -576,91 +667,80 @@
     </div>
     <div class="hero-scroll-hint">
         <span>向下滚动探索</span>
-        <span class="arrow">&#9660;</span>
+        <span style="font-size:24px;">&#9660;</span>
     </div>
 </section>
 
-<!-- ========== 最新资讯 ========== -->
-<section class="section reveal" id="latest-section">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">最新资讯</h2>
-            <p class="section-subtitle">追踪物联网产业发展动态与市场趋势</p>
+<!-- ========== 行业资讯 ========== -->
+<section class="full-section category-section light" id="news">
+    <div class="category-bg" id="newsBgImg"></div>
+    <div class="category-bg-overlay"></div>
+    <div class="category-inner">
+        <div class="category-header light">
+            <h2>&#128240; 行业资讯</h2>
+            <p>追踪物联网产业发展动态与市场趋势</p>
         </div>
+        <div class="card-grid" id="list-news"></div>
     </div>
-    <div class="card-grid" id="latestCards"></div>
 </section>
 
-<!-- ========== 行业资讯锚点区块 ========== -->
-<section class="section section-alt category-anchor reveal" id="news">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">&#128240; 行业资讯</h2>
-            <p class="section-subtitle">物联网产业全景观察</p>
+<!-- ========== 技术干货 ========== -->
+<section class="full-section category-section dark" id="tech">
+    <div class="category-bg" id="techBgImg"></div>
+    <div class="category-bg-overlay"></div>
+    <div class="category-inner">
+        <div class="category-header dark">
+            <h2>&#128187; 技术干货</h2>
+            <p>深入解析物联网核心技术与实践指南</p>
         </div>
-        <span class="section-more" onclick="scrollToSection('news')">&#8679; 只看此项</span>
+        <div class="card-grid" id="list-tech"></div>
     </div>
-    <div class="card-grid" id="list-news"></div>
 </section>
 
-<!-- ========== 热门技术 ========== -->
-<section class="section reveal" id="tech-section">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">热门技术</h2>
-            <p class="section-subtitle">深入解析物联网核心技术与实践指南</p>
+<!-- ========== 项目案例 ========== -->
+<section class="full-section category-section light" id="projects">
+    <div class="category-bg" id="projectsBgImg"></div>
+    <div class="category-bg-overlay"></div>
+    <div class="category-inner">
+        <div class="category-header light">
+            <h2>&#128736;&#65039; 项目案例</h2>
+            <p>真实物联网项目方案与实战经验</p>
         </div>
+        <div class="card-grid" id="list-projects"></div>
     </div>
-    <div class="card-grid" id="techCards"></div>
 </section>
 
-<!-- ========== 技术干货锚点区块 ========== -->
-<section class="section section-alt category-anchor reveal" id="tech">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">&#128187; 技术干货</h2>
-            <p class="section-subtitle">从入门到精通的技术指南</p>
+<!-- ========== 学习资源 ========== -->
+<section class="full-section category-section dark" id="resources">
+    <div class="category-bg" id="resourcesBgImg"></div>
+    <div class="category-bg-overlay"></div>
+    <div class="category-inner">
+        <div class="category-header dark">
+            <h2>&#128218;&#65039; 学习资源</h2>
+            <p>精选课程、书籍与工具推荐</p>
         </div>
+        <div class="card-grid" id="list-resources"></div>
     </div>
-    <div class="card-grid" id="list-tech"></div>
 </section>
 
-<!-- ========== 精选项目 ========== -->
-<section class="section reveal" id="project-section">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">精选项目案例</h2>
-            <p class="section-subtitle">真实场景下的项目实践分享</p>
+<!-- ========== 联系我们 ========== -->
+<section class="full-section contact-section" id="contact">
+    <div class="contact-bg" id="contactBgImg"></div>
+    <div class="contact-bg-overlay"></div>
+    <div class="contact-inner">
+        <h1>&#128222; 联系我们</h1>
+        <p class="contact-sub">有任何问题或建议，欢迎随时与我们取得联系</p>
+        <div class="contact-grid" id="contactGrid">
+            <!-- 由 JS 动态渲染 -->
         </div>
     </div>
-    <div class="card-grid" id="projectCards"></div>
-</section>
-
-<!-- ========== 项目案例锚点区块 ========== -->
-<section class="section section-alt category-anchor reveal" id="projects">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">&#128736;&#65039; 项目案例</h2>
-            <p class="section-subtitle">从设计到落地的完整方案</p>
-        </div>
-    </div>
-    <div class="card-grid" id="list-projects"></div>
-</section>
-
-<!-- ========== 学习资源锚点区块 ========== -->
-<section class="section section-alt category-anchor reveal" id="resources">
-    <div class="section-header">
-        <div>
-            <h2 class="section-title">&#128218;&#65039; 学习资源</h2>
-            <p class="section-subtitle">精选课程、书籍与工具推荐</p>
-        </div>
-    </div>
-    <div class="card-grid" id="list-resources"></div>
 </section>
 
 <!-- ========== 关于我们 ========== -->
-<section class="section reveal" id="about">
-    <div class="about-section">
+<section class="full-section about-section" id="about">
+    <div class="about-bg" id="aboutBgImg"></div>
+    <div class="about-bg-overlay"></div>
+    <div class="about-inner">
         <h1>&#127758; 关于 IoT资讯</h1>
         <p>IoT资讯是一个面向物联网工程专业学生及从业者的综合性信息门户平台。我们致力于提供最前沿的行业动态、最实用的技术教程、最具参考价值的实战项目案例以及最优质的学习资源推荐。</p>
         <p>无论您是刚入门的初学者，还是经验丰富的工程师，这里都能为您提供有价值的信息与服务。</p>
@@ -698,14 +778,15 @@
         </div>
         <div class="footer-col">
             <h3>快速导航</h3>
-            <a href="#news" onclick="scrollToSection('news');return false;">行业资讯</a>
-            <a href="#tech" onclick="scrollToSection('tech');return false;">技术干货</a>
-            <a href="#projects" onclick="scrollToSection('projects');return false;">项目案例</a>
-            <a href="#resources" onclick="scrollToSection('resources');return false;">学习资源</a>
+            <a href="#news" onclick="scrollTo('news');return false;">行业资讯</a>
+            <a href="#tech" onclick="scrollTo('tech');return false;">技术干货</a>
+            <a href="#projects" onclick="scrollTo('projects');return false;">项目案例</a>
+            <a href="#resources" onclick="scrollTo('resources');return false;">学习资源</a>
         </div>
         <div class="footer-col">
             <h3>关于我们</h3>
-            <a href="#about" onclick="scrollToSection('about');return false;">平台介绍</a>
+            <a href="#about" onclick="scrollTo('about');return false;">平台介绍</a>
+            <a href="#contact" onclick="scrollTo('contact');return false;">联系我们</a>
         </div>
         <div class="footer-col">
             <h3>管理入口</h3>
@@ -713,7 +794,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2025 IoT资讯. All rights reserved. | 物联网工程专业门户平台</p>
+        <p>&copy; 2025 IoT资讯. All rights reserved.</p>
     </div>
 </footer>
 
@@ -727,9 +808,10 @@
 
 <script>
 // ============================================================
-//  全局常量与工具函数
+//  全局常量
 // ============================================================
 const STORAGE_KEY = 'iot_news_data';
+const SITE_CONFIG_KEY = 'iot_site_config';
 
 const CATEGORY_MAP = {
     'news':     { label: '行业资讯', cssClass: 'tag-news',     icon: '\u{1F4F0}' },
@@ -738,12 +820,102 @@ const CATEGORY_MAP = {
     'resources':{ label: '学习资源', cssClass: 'tag-resource', icon: '\u{1F4D8}️' },
 };
 
+// ============================================================
+//  网站配置（背景图等）
+// ============================================================
+function getSiteConfig() {
+    const raw = localStorage.getItem(SITE_CONFIG_KEY);
+    if (raw) return JSON.parse(raw);
+    // 默认配置
+    const cfg = {
+        heroBg: '',        // Hero 背景图 URL
+        newsBg: '',        // 行业资讯区块背景图
+        techBg: '',
+        projectsBg: '',
+        resourcesBg: '',
+        contactBg: '',
+        aboutBg: '',
+        // 联系信息
+        email: '',
+        phone: '',
+        address: '',
+        wechat: '',
+    };
+    saveSiteConfig(cfg);
+    return cfg;
+}
+function saveSiteConfig(cfg) {
+    localStorage.setItem(SITE_CONFIG_KEY, JSON.stringify(cfg));
+}
+
+// 应用背景图
+function applyBackgrounds() {
+    const cfg = getSiteConfig();
+    const sets = [
+        ['heroBgImg', cfg.heroBg],
+        ['newsBgImg', cfg.newsBg],
+        ['techBgImg', cfg.techBg],
+        ['projectsBgImg', cfg.projectsBg],
+        ['resourcesBgImg', cfg.resourcesBg],
+        ['contactBgImg', cfg.contactBg],
+        ['aboutBgImg', cfg.aboutBg],
+    ];
+    sets.forEach(([id, url]) => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (url) {
+                el.style.backgroundImage = 'url("' + url + '")';
+            } else {
+                // 无图片时保留渐变背景
+                if (id === 'heroBgImg') {
+                    el.style.background = 'radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.2) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(0,102,255,0.2) 0%, transparent 60%)';
+                } else if (id === 'newsBgImg' || id === 'projectsBgImg') {
+                    el.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #f0f4f8 100%)';
+                } else if (id === 'techBgImg' || id === 'resourcesBgImg') {
+                    el.style.background = 'linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%)';
+                } else if (id === 'contactBgImg' || id === 'aboutBgImg') {
+                    el.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #f0f4f8 100%)';
+                }
+            }
+        }
+    });
+    // 渲染联系信息
+    renderContact(cfg);
+}
+
+function renderContact(cfg) {
+    const grid = document.getElementById('contactGrid');
+    let html = '';
+    if (cfg.email) {
+        html += `<div class="contact-item"><div class="c-icon">&#128231;</div><h3>电子邮箱</h3><p>${escapeHtml(cfg.email)}</p></div>`;
+    }
+    if (cfg.phone) {
+        html += `<div class="contact-item"><div class="c-icon">&#128222;</div><h3>联系电话</h3><p>${escapeHtml(cfg.phone)}</p></div>`;
+    }
+    if (cfg.address) {
+        html += `<div class="contact-item"><div class="c-icon">&#128205;</div><h3>联系地址</h3><p>${escapeHtml(cfg.address)}</p></div>`;
+    }
+    if (cfg.wechat) {
+        html += `<div class="contact-item"><div class="c-icon">&#128172;</div><h3>微信公众号</h3><p>${escapeHtml(cfg.wechat)}</p></div>`;
+    }
+    // 如果都没有，显示默认
+    if (!html) {
+        html = '<p style="opacity:0.6;font-size:16px;">暂无联系方式，请联系管理员添加</p>';
+    }
+    grid.innerHTML = html;
+}
+
+// ============================================================
+//  数据管理
+// ============================================================
 function getAllData() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
     return initDemoData();
 }
-function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
 
 function showToast(msg) {
     const el = document.getElementById('toast');
@@ -766,14 +938,22 @@ function makeCover(category, color1, color2) {
     return 'data:image/svg+xml,' + encodeURIComponent(svg);
 }
 
+function escapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
 function createCard(item) {
     const cat = CATEGORY_MAP[item.category] || CATEGORY_MAP.tech;
+    const isDark = item._dark;
     const coverSrc = item.cover || makeCover(item.category, '#e3f2fd', '#bbdefb');
+    const cardClass = isDark ? 'card card-dark' : 'card';
     return `
-        <div class="card" onclick="openDetail('${item.id}')">
+        <div class="${cardClass}" onclick="openDetail('${item.id}')">
             <div class="card-cover">
-                <img src="${coverSrc}" alt="" style="width:100%;height:100%;object-fit:cover;"
-                     onerror="this.src='${makeCover(item.category, '#e3f2fd', '#bbdefb')}'">
+                <img src="${coverSrc}" alt=""
+                     onerror="this.parentElement.innerHTML='<span style=font-size:40px;color:#999>'+'${cat.icon}'+'</span>'">
             </div>
             <div class="card-body">
                 <span class="card-tag ${cat.cssClass}">${cat.label}</span>
@@ -785,12 +965,6 @@ function createCard(item) {
                 </div>
             </div>
         </div>`;
-}
-
-function escapeHtml(str) {
-    const d = document.createElement('div');
-    d.textContent = str;
-    return d.innerHTML;
 }
 
 // ============================================================
@@ -842,12 +1016,11 @@ function genId() { return 'item_' + Date.now().toString(36) + '_' + Math.random(
 // ============================================================
 //  滚动导航
 // ============================================================
-function scrollToSection(id) {
+function scrollTo(id) {
     const el = document.getElementById(id);
     if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    // 关闭移动端菜单
     document.getElementById('navLinks').classList.remove('open');
 }
 
@@ -855,20 +1028,18 @@ function toggleMobileMenu() {
     document.getElementById('navLinks').classList.toggle('open');
 }
 
-// 高亮当前可见区域的导航项
-const sections = ['hero', 'news', 'tech', 'projects', 'resources', 'about'];
-const navLinks = document.querySelectorAll('.nav-links a');
-
+// 导航高亮
+const sectionIds = ['hero', 'news', 'tech', 'projects', 'resources', 'contact', 'about'];
 function updateActiveNav() {
     let current = 'hero';
     const scrollY = window.scrollY + 100;
-    for (const id of sections) {
+    for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (el && el.offsetTop <= scrollY) {
             current = id;
         }
     }
-    navLinks.forEach(a => {
+    document.querySelectorAll('.nav-links a').forEach(a => {
         a.classList.toggle('active', a.dataset.target === current);
     });
 }
@@ -881,23 +1052,19 @@ function updateScrollIndicator() {
     document.getElementById('scrollIndicator').style.width = progress + '%';
 }
 
-// IntersectionObserver 实现滚动显示动画
-function initRevealAnimations() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// Parallax 视差效果
+function applyParallax() {
+    const scrollY = window.scrollY;
+    const heroBg = document.getElementById('heroBgImg');
+    if (heroBg) {
+        heroBg.style.transform = 'translateY(' + (scrollY * 0.3) + 'px)';
+    }
 }
 
 // 粒子效果
 function createParticles() {
     const container = document.getElementById('heroParticles');
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 25; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.left = Math.random() * 100 + '%';
@@ -908,41 +1075,31 @@ function createParticles() {
     }
 }
 
-// 滚动事件监听
+// 滚动事件
 window.addEventListener('scroll', () => {
     updateActiveNav();
     updateScrollIndicator();
-    // 导航栏样式
+    applyParallax();
     document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
 });
 
 // ============================================================
-//  渲染函数
+//  渲染
 // ============================================================
-function renderHomeSections() {
+function renderAllLists() {
     const data = getAllData();
-    const newsItems = data.filter(i => i.category === 'news').sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-    const techItems = data.filter(i => i.category === 'tech').sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-    const projItems = data.filter(i => i.category === 'projects').sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-
-    document.getElementById('latestCards').innerHTML =
-        newsItems.slice(0, 4).map(createCard).join('') || '<p style="text-align:center;color:#999;grid-column:1/-1;padding:40px;">暂无内容</p>';
-    document.getElementById('techCards').innerHTML =
-        techItems.slice(0, 4).map(createCard).join('') || '<p style="text-align:center;color:#999;grid-column:1/-1;padding:40px;">暂无内容</p>';
-    document.getElementById('projectCards').innerHTML =
-        projItems.slice(0, 3).map(createCard).join('') || '<p style="text-align:center;color:#999;grid-column:1/-1;padding:40px;">暂无内容</p>';
-}
-
-function renderCategoryList(category) {
-    const data = getAllData();
-    const items = data.filter(i => i.category === category)
-                      .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
-    const container = document.getElementById('list-' + category);
-    if (container) {
-        container.innerHTML = items.length
-            ? items.map(createCard).join('')
-            : '<p style="text-align:center;color:#999;grid-column:1/-1;padding:40px;">暂无内容，管理员添加后将自动显示</p>';
-    }
+    ['news', 'tech', 'projects', 'resources'].forEach(cat => {
+        const items = data.filter(i => i.category === cat)
+                          .sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
+        const container = document.getElementById('list-' + cat);
+        if (container) {
+            // 标记暗色区块
+            items.forEach(item => { item._dark = (cat === 'tech' || cat === 'resources'); });
+            container.innerHTML = items.length
+                ? items.map(createCard).join('')
+                : '<p style="text-align:center;color:#999;grid-column:1/-1;padding:60px 0;font-size:16px;">暂无内容，管理员添加后将自动显示</p>';
+        }
+    });
 }
 
 function openDetail(id) {
@@ -952,7 +1109,6 @@ function openDetail(id) {
     const cat = CATEGORY_MAP[item.category] || CATEGORY_MAP.tech;
     const coverSrc = item.cover || makeCover(item.category, '#e3f2fd', '#bbdefb');
     document.getElementById('detailBody').innerHTML = `
-        <div class="detail-back-link" onclick="closeDetail()">&#8592; 返回列表</div>
         <span class="detail-category ${cat.cssClass}">${cat.icon} ${cat.label}</span>
         <h1 class="detail-title">${escapeHtml(item.title)}</h1>
         <div class="detail-meta">
@@ -976,7 +1132,6 @@ function closeDetailOutside(e) {
     }
 }
 
-// ESC 关闭详情
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeDetail();
 });
@@ -986,14 +1141,9 @@ document.addEventListener('keydown', (e) => {
 // ============================================================
 (function init() {
     getAllData();
-    renderHomeSections();
-    renderCategoryList('news');
-    renderCategoryList('tech');
-    renderCategoryList('projects');
-    renderCategoryList('resources');
+    applyBackgrounds();
+    renderAllLists();
     createParticles();
-    initRevealAnimations();
-    // 初始状态
     updateActiveNav();
     updateScrollIndicator();
 })();
