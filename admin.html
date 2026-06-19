@@ -507,7 +507,13 @@ function genId() { return 'item_' + Date.now().toString(36) + '_' + Math.random(
 
 function getSiteConfig() {
     const raw = localStorage.getItem(SITE_CONFIG_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+        const cfg = JSON.parse(raw);
+        // 确保向后兼容：旧配置可能缺少 videos/customSections
+        if (!cfg.videos) cfg.videos = [];
+        if (!cfg.customSections) cfg.customSections = [];
+        return cfg;
+    }
     return {
         heroBg: '', newsBg: '', techBg: '', projectsBg: '', resourcesBg: '',
         contactBg: '', aboutBg: '',
