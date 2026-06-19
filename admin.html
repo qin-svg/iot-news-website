@@ -9,72 +9,59 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
                          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-            background: #f0f2f5;
-            color: #333;
-            min-height: 100vh;
+            background: #f0f2f5; color: #333; min-height: 100vh;
         }
 
         /* ========== 登录页 ========== */
         .login-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
             background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0d2137 100%);
             position: relative;
         }
         .login-page::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(0,180,255,0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0,212,255,0.08) 0%, transparent 50%);
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(0,180,255,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(0,212,255,0.08) 0%, transparent 50%);
         }
         .login-box {
-            position: relative;
-            background: rgba(255,255,255,0.06);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 48px 40px;
-            width: 400px;
-            max-width: 90vw;
-            text-align: center;
+            position: relative; background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 48px 40px;
+            width: 400px; max-width: 90vw; text-align: center;
         }
         .login-box h1 { color: #fff; font-size: 28px; margin-bottom: 8px; }
         .login-box .subtitle { color: rgba(255,255,255,0.5); font-size: 14px; margin-bottom: 36px; }
         .login-box .logo-icon {
             width: 56px; height: 56px;
             background: linear-gradient(135deg, #00d4ff, #0066ff);
-            border-radius: 14px;
-            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 14px; display: inline-flex;
+            align-items: center; justify-content: center;
             font-size: 28px; margin-bottom: 20px;
         }
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label {
-            display: block; color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 8px;
+            display: block; color: rgba(255,255,255,0.7);
+            font-size: 14px; margin-bottom: 8px;
         }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 12px 16px;
             border: 1px solid rgba(255,255,255,0.15); border-radius: 10px;
-            background: rgba(255,255,255,0.08); color: #fff; font-size: 15px; outline: none;
-            transition: border-color 0.3s;
+            background: rgba(255,255,255,0.08); color: #fff;
+            font-size: 15px; outline: none; transition: border-color 0.3s;
         }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus { border-color: #00b4ff; }
-        .form-group input::placeholder,
-        .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #00b4ff;
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
         .form-group select option { background: #1a2a4a; color: #fff; }
         .form-group textarea { resize: vertical; min-height: 120px; }
         .btn-login {
             width: 100%; padding: 14px; border: none; border-radius: 10px;
             background: linear-gradient(135deg, #00b4ff, #0066ff);
-            color: #fff; font-size: 16px; font-weight: 600; cursor: pointer;
-            transition: all 0.3s; margin-top: 8px;
+            color: #fff; font-size: 16px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s; margin-top: 8px;
         }
         .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
         .login-error { color: #ff6b6b; font-size: 13px; margin-top: 12px; min-height: 20px; }
@@ -87,29 +74,20 @@
         /* ========== 管理后台 ========== */
         .admin-page { display: none; min-height: 100vh; }
         .admin-page.active { display: flex; }
-
         .sidebar {
-            width: 240px;
-            background: linear-gradient(180deg, #0a1628, #132238);
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            position: fixed;
-            top: 0; left: 0; bottom: 0;
-            z-index: 100;
+            width: 240px; background: linear-gradient(180deg, #0a1628, #132238);
+            color: #fff; display: flex; flex-direction: column;
+            flex-shrink: 0; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
         }
         .sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
             display: flex; align-items: center; gap: 10px;
         }
         .sidebar-header .s-icon {
             width: 36px; height: 36px;
             background: linear-gradient(135deg, #00d4ff, #0066ff);
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px;
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-size: 18px;
         }
         .sidebar-header h2 { font-size: 17px; font-weight: 700; }
         .sidebar-nav { flex: 1; padding: 12px 0; }
@@ -134,11 +112,9 @@
             background: rgba(255,107,107,0.15);
             border-color: rgba(255,107,107,0.3); color: #ff6b6b;
         }
-
         .main-content {
             margin-left: 240px; flex: 1;
-            display: flex; flex-direction: column;
-            min-height: 100vh;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
         .top-bar {
             background: #fff; padding: 16px 32px;
@@ -152,8 +128,7 @@
 
         /* 统计 */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px; margin-bottom: 32px;
         }
         .stat-card {
@@ -196,6 +171,8 @@
         .btn-outline { background: #fff; border: 1px solid #d9d9d9; color: #666; }
         .btn-outline:hover { border-color: #0066ff; color: #0066ff; }
         .btn-sm { padding: 5px 12px; font-size: 13px; }
+        .btn-secondary { background: #6c757d; color: #fff; }
+        .btn-secondary:hover { background: #5a6268; }
 
         /* 表格 */
         .table-wrapper {
@@ -246,7 +223,6 @@
             width: 32px; height: 32px; border: none; background: #f5f5f5;
             border-radius: 50%; font-size: 18px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
         }
         .modal-close:hover { background: #e8e8e8; }
         .modal-body { padding: 24px 28px; }
@@ -294,10 +270,9 @@
         .confirm-dialog p { color: #888; font-size: 14px; margin-bottom: 24px; }
         .confirm-actions { display: flex; gap: 12px; justify-content: center; }
 
-        /* 配置页面样式 */
+        /* 配置页面 */
         .config-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
         }
         .config-card {
@@ -324,12 +299,47 @@
         }
         .preview-img.show { display: block; }
 
+        /* 上传区域 */
+        .upload-area {
+            border: 2px dashed #d9d9d9; border-radius: 12px;
+            padding: 24px; text-align: center; cursor: pointer;
+            transition: all 0.3s; background: #fafafa;
+        }
+        .upload-area:hover { border-color: #0066ff; background: #f0f7ff; }
+        .upload-area.dragover { border-color: #0066ff; background: #e6f0ff; }
+        .upload-area .upload-icon { font-size: 36px; margin-bottom: 8px; }
+        .upload-area .upload-text { font-size: 14px; color: #888; }
+        .upload-area .upload-hint { font-size: 12px; color: #bbb; margin-top: 4px; }
+        .upload-preview {
+            max-width: 100%; max-height: 200px; border-radius: 8px;
+            margin-top: 12px; display: none;
+        }
+        .upload-preview.show { display: block; }
+        .upload-remove {
+            display: none; margin-top: 8px; color: #ff4d4f;
+            font-size: 13px; cursor: pointer;
+        }
+        .upload-remove.show { display: inline; }
+
+        /* 管理列表项 */
+        .manage-item {
+            background: #fff; border-radius: 12px; padding: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .manage-item-info { flex: 1; }
+        .manage-item-info h4 { font-size: 15px; color: #1a2a4a; margin-bottom: 4px; }
+        .manage-item-info p { font-size: 13px; color: #888; }
+        .manage-item-thumb {
+            width: 80px; height: 60px; border-radius: 8px;
+            object-fit: cover; background: #f0f0f0; flex-shrink: 0;
+        }
+        .manage-item-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
         /* 响应式 */
         @media (max-width: 768px) {
             .sidebar { width: 60px; overflow: hidden; }
-            .sidebar-header h2,
-            .sidebar-nav a span,
-            .sidebar-footer span { display: none; }
+            .sidebar-header h2, .sidebar-nav a span, .sidebar-footer span { display: none; }
             .sidebar-nav a { justify-content: center; padding: 14px 0; }
             .main-content { margin-left: 60px; }
             .content-area { padding: 20px 16px; }
@@ -381,6 +391,8 @@
             <a data-tab="projects" onclick="switchTab('projects')">&#128736;&#65039; <span>项目案例</span></a>
             <a data-tab="resources" onclick="switchTab('resources')">&#128218;&#65039; <span>学习资源</span></a>
             <a data-tab="site" onclick="switchTab('site')">&#127970; <span>网站设置</span></a>
+            <a data-tab="video" onclick="switchTab('video')">&#127909; <span>视频管理</span></a>
+            <a data-tab="sections" onclick="switchTab('sections')">&#128205; <span>部署区块</span></a>
         </nav>
         <div class="sidebar-footer">
             <button class="btn-logout" onclick="handleLogout()">&#128682; <span>退出登录</span></button>
@@ -419,9 +431,15 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>封面图链接</label>
-                <input type="text" id="editCover" placeholder="填写图片URL地址，留空则自动生成">
-                <img class="preview-img" id="coverPreview" alt="封面预览">
+                <label>封面图</label>
+                <div class="upload-area" id="coverUploadArea" onclick="document.getElementById('coverFileInput').click()">
+                    <div class="upload-icon">&#128247;</div>
+                    <div class="upload-text">点击上传封面图</div>
+                    <div class="upload-hint">支持 JPG/PNG/GIF 格式</div>
+                    <input type="file" id="coverFileInput" accept="image/*" style="display:none" onchange="handleCoverUpload(this)">
+                </div>
+                <img class="upload-preview" id="coverPreview" alt="封面预览">
+                <div class="upload-remove" id="coverRemove" onclick="removeCover()">&#128465; 移除图片</div>
             </div>
             <div class="form-group">
                 <label>内容摘要</label>
@@ -494,6 +512,8 @@ function getSiteConfig() {
         heroBg: '', newsBg: '', techBg: '', projectsBg: '', resourcesBg: '',
         contactBg: '', aboutBg: '',
         email: '', phone: '', address: '', wechat: '',
+        videos: [],
+        customSections: [],
     };
 }
 function saveSiteConfig(cfg) {
@@ -511,6 +531,34 @@ function escapeHtml(str) {
     const d = document.createElement('div');
     d.textContent = str;
     return d.innerHTML;
+}
+
+// 文件转 base64
+function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+// 限制 base64 长度（避免 localStorage 溢出）
+function compressImage(base64, maxWidth, quality) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            if (w > maxWidth) { h = h * maxWidth / w; w = maxWidth; }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = base64;
+    });
 }
 
 // ============================================================
@@ -559,13 +607,10 @@ let currentTab = 'dashboard';
 let deleteTargetId = null;
 
 const TAB_TITLES = {
-    dashboard: '内容总览',
-    all: '全部内容',
-    news: '行业资讯',
-    tech: '技术干货',
-    projects: '项目案例',
-    resources: '学习资源',
-    site: '网站设置',
+    dashboard: '内容总览', all: '全部内容',
+    news: '行业资讯', tech: '技术干货',
+    projects: '项目案例', resources: '学习资源',
+    site: '网站设置', video: '视频管理', sections: '部署区块',
 };
 
 function switchTab(tab) {
@@ -576,6 +621,8 @@ function switchTab(tab) {
     document.getElementById('pageTitle').textContent = TAB_TITLES[tab] || '管理后台';
     if (tab === 'dashboard') renderDashboard();
     else if (tab === 'site') renderSiteConfig();
+    else if (tab === 'video') renderVideoManage();
+    else if (tab === 'sections') renderSectionsManage();
     else renderListTab(tab);
 }
 
@@ -702,14 +749,23 @@ function filterTable(category) {
 // ============================================================
 //  编辑器（新增/编辑）
 // ============================================================
+let currentCoverBase64 = '';
+
 function openEditor(id, defaultCategory) {
     const modal = document.getElementById('editorModal');
     const isEdit = !!id;
     document.getElementById('editorTitle').textContent = isEdit ? '编辑内容' : '新增内容';
     document.getElementById('editId').value = id || '';
+    currentCoverBase64 = '';
 
-    // 封面预览
+    // 重置上传区域
+    const uploadArea = document.getElementById('coverUploadArea');
     const preview = document.getElementById('coverPreview');
+    const removeBtn = document.getElementById('coverRemove');
+    uploadArea.style.display = '';
+    preview.classList.remove('show');
+    preview.src = '';
+    removeBtn.classList.remove('show');
 
     if (isEdit) {
         const data = getAllData();
@@ -717,50 +773,63 @@ function openEditor(id, defaultCategory) {
         if (item) {
             document.getElementById('editTitle').value = item.title;
             document.getElementById('editCategory').value = item.category;
-            document.getElementById('editCover').value = item.cover || '';
             document.getElementById('editSummary').value = item.summary || '';
             document.getElementById('editContent').value = item.content || '';
             document.getElementById('editDate').value = item.publishDate || '';
             if (item.cover) {
                 preview.src = item.cover;
                 preview.classList.add('show');
-            } else {
-                preview.classList.remove('show');
+                preview.style.display = 'block';
+                removeBtn.classList.add('show');
+                currentCoverBase64 = item.cover;
             }
         }
     } else {
         document.getElementById('editTitle').value = '';
         document.getElementById('editCategory').value = defaultCategory || 'news';
-        document.getElementById('editCover').value = '';
         document.getElementById('editSummary').value = '';
         document.getElementById('editContent').value = '';
         document.getElementById('editDate').value = new Date().toISOString().split('T')[0];
-        preview.classList.remove('show');
     }
-
-    // 封面图链接输入框实时预览
-    document.getElementById('editCover').oninput = function() {
-        if (this.value.trim()) {
-            preview.src = this.value.trim();
-            preview.classList.add('show');
-            preview.onerror = function() { this.classList.remove('show'); };
-        } else {
-            preview.classList.remove('show');
-        }
-    };
 
     modal.classList.add('show');
 }
 
 function closeEditor() {
     document.getElementById('editorModal').classList.remove('show');
+    currentCoverBase64 = '';
 }
 
-function saveItem() {
+function handleCoverUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    fileToBase64(file).then(base64 => {
+        return compressImage(base64, 800, 0.7);
+    }).then(compressed => {
+        currentCoverBase64 = compressed;
+        const preview = document.getElementById('coverPreview');
+        preview.src = compressed;
+        preview.classList.add('show');
+        preview.style.display = 'block';
+        document.getElementById('coverRemove').classList.add('show');
+        document.getElementById('coverUploadArea').style.display = 'none';
+    });
+}
+
+function removeCover() {
+    currentCoverBase64 = '';
+    const preview = document.getElementById('coverPreview');
+    preview.classList.remove('show');
+    preview.style.display = 'none';
+    document.getElementById('coverRemove').classList.remove('show');
+    document.getElementById('coverUploadArea').style.display = '';
+    document.getElementById('coverFileInput').value = '';
+}
+
+async function saveItem() {
     const id = document.getElementById('editId').value;
     const title = document.getElementById('editTitle').value.trim();
     const category = document.getElementById('editCategory').value;
-    const cover = document.getElementById('editCover').value.trim();
     const summary = document.getElementById('editSummary').value.trim();
     const content = document.getElementById('editContent').value.trim();
     const publishDate = document.getElementById('editDate').value;
@@ -775,7 +844,7 @@ function saveItem() {
         if (idx !== -1) {
             data[idx].title = title;
             data[idx].category = category;
-            data[idx].cover = cover;
+            data[idx].cover = currentCoverBase64;
             data[idx].summary = summary;
             data[idx].content = content;
             data[idx].publishDate = publishDate;
@@ -784,7 +853,9 @@ function saveItem() {
     } else {
         data.push({
             id: genId(),
-            category, title, cover, summary, content, publishDate,
+            category, title,
+            cover: currentCoverBase64,
+            summary, content, publishDate,
             createdAt: Date.now()
         });
         showToast('添加成功！前台刷新即可查看', 'success');
@@ -820,73 +891,41 @@ function executeDelete() {
 }
 
 // ============================================================
-//  网站设置（背景图 + 联系方式）
+//  网站设置（背景图上传 + 联系方式）
 // ============================================================
 function renderSiteConfig() {
     const cfg = getSiteConfig();
+    const bgKeys = ['heroBg','newsBg','techBg','projectsBg','resourcesBg','contactBg','aboutBg'];
+    const bgLabels = ['Hero 首屏','行业资讯区块','技术干货区块','项目案例区块','学习资源区块','联系我们区块','关于我们区块'];
+
+    let bgHtml = '';
+    bgKeys.forEach((key, i) => {
+        const val = cfg[key] || '';
+        bgHtml += `
+            <div class="config-card">
+                <h3>${bgLabels[i]}</h3>
+                <div class="upload-area" onclick="document.getElementById('upload_${key}').click()"
+                     ondragover="event.preventDefault();this.classList.add('dragover')"
+                     ondragleave="this.classList.remove('dragover')"
+                     ondrop="event.preventDefault();this.classList.remove('dragover');handleBgUpload('${key}', event.dataTransfer.files[0])">
+                    <div class="upload-icon">&#128247;</div>
+                    <div class="upload-text">点击或拖拽上传图片</div>
+                    <div class="upload-hint">支持 JPG/PNG/GIF 格式</div>
+                    <input type="file" id="upload_${key}" accept="image/*" style="display:none"
+                           onchange="handleBgUpload('${key}', this.files[0])">
+                </div>
+                <img class="upload-preview" id="prev_${key}" src="${val}" alt="预览"
+                     style="${val ? 'display:block' : ''}">
+                <div class="upload-remove ${val ? 'show' : ''}" onclick="removeBgImage('${key}')">&#128465; 移除图片</div>
+            </div>`;
+    });
+
     document.getElementById('contentArea').innerHTML = `
         <div style="margin-bottom:24px;">
             <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127970; 网站外观设置</h3>
-            <p style="font-size:14px;color:#888;">设置各区块的背景图和封面图，留空则使用默认渐变背景。图片URL需为公开可访问的地址。</p>
+            <p style="font-size:14px;color:#888;">上传各区块的背景图片，留空则使用默认渐变背景。</p>
         </div>
-        <div class="config-grid">
-            <div class="config-card">
-                <h3>&#127758; Hero 首屏背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_heroBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.heroBg || '')}">
-                    <img class="preview-img" id="prev_heroBg" src="${cfg.heroBg || ''}" alt="预览" style="${cfg.heroBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128240; 行业资讯区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_newsBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.newsBg || '')}">
-                    <img class="preview-img" id="prev_newsBg" src="${cfg.newsBg || ''}" alt="预览" style="${cfg.newsBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128187; 技术干货区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_techBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.techBg || '')}">
-                    <img class="preview-img" id="prev_techBg" src="${cfg.techBg || ''}" alt="预览" style="${cfg.techBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128736;&#65039; 项目案例区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_projectsBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.projectsBg || '')}">
-                    <img class="preview-img" id="prev_projectsBg" src="${cfg.projectsBg || ''}" alt="预览" style="${cfg.projectsBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128218;&#65039; 学习资源区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_resourcesBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.resourcesBg || '')}">
-                    <img class="preview-img" id="prev_resourcesBg" src="${cfg.resourcesBg || ''}" alt="预览" style="${cfg.resourcesBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128194; 联系我们区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_contactBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.contactBg || '')}">
-                    <img class="preview-img" id="prev_contactBg" src="${cfg.contactBg || ''}" alt="预览" style="${cfg.contactBg ? 'display:block' : ''}">
-                </div>
-            </div>
-            <div class="config-card">
-                <h3>&#128161; 关于我们区块背景</h3>
-                <div class="form-group">
-                    <label>背景图URL</label>
-                    <input type="text" id="cfg_aboutBg" placeholder="粘贴图片链接..." value="${escapeHtml(cfg.aboutBg || '')}">
-                    <img class="preview-img" id="prev_aboutBg" src="${cfg.aboutBg || ''}" alt="预览" style="${cfg.aboutBg ? 'display:block' : ''}">
-                </div>
-            </div>
-        </div>
+        <div class="config-grid">${bgHtml}</div>
 
         <div style="margin-top:32px;">
             <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128222; 联系方式设置</h3>
@@ -927,43 +966,282 @@ function renderSiteConfig() {
             <button class="btn btn-primary" onclick="saveSiteConfigData()" style="padding:12px 48px;font-size:16px;">&#128190; 保存全部设置</button>
         </div>
     `;
+}
 
-    // 绑定实时预览
-    ['heroBg','newsBg','techBg','projectsBg','resourcesBg','contactBg','aboutBg'].forEach(key => {
-        const input = document.getElementById('cfg_' + key);
+// 处理背景图上传
+async function handleBgUpload(key, file) {
+    if (!file) return;
+    try {
+        const base64 = await fileToBase64(file);
+        const compressed = await compressImage(base64, 1600, 0.75);
+        const cfg = getSiteConfig();
+        cfg[key] = compressed;
+        saveSiteConfig(cfg);
+
+        // 更新预览
         const preview = document.getElementById('prev_' + key);
-        if (input && preview) {
-            input.oninput = function() {
-                if (this.value.trim()) {
-                    preview.src = this.value.trim();
-                    preview.style.display = 'block';
-                    preview.classList.add('show');
-                    preview.onerror = function() { this.style.display = 'none'; };
-                } else {
-                    preview.style.display = 'none';
-                    preview.classList.remove('show');
-                }
-            };
+        if (preview) {
+            preview.src = compressed;
+            preview.classList.add('show');
+            preview.style.display = 'block';
         }
-    });
+        const removeBtn = preview ? preview.nextElementSibling : null;
+        if (removeBtn) removeBtn.classList.add('show');
+        showToast('图片已保存', 'success');
+    } catch(e) {
+        showToast('图片上传失败', 'error');
+    }
+}
+
+function removeBgImage(key) {
+    const cfg = getSiteConfig();
+    cfg[key] = '';
+    saveSiteConfig(cfg);
+    const preview = document.getElementById('prev_' + key);
+    if (preview) { preview.style.display = 'none'; preview.classList.remove('show'); }
+    const removeBtn = preview ? preview.nextElementSibling : null;
+    if (removeBtn) removeBtn.classList.remove('show');
+    showToast('图片已移除', 'success');
 }
 
 function saveSiteConfigData() {
     const cfg = getSiteConfig();
-    cfg.heroBg = document.getElementById('cfg_heroBg').value.trim();
-    cfg.newsBg = document.getElementById('cfg_newsBg').value.trim();
-    cfg.techBg = document.getElementById('cfg_techBg').value.trim();
-    cfg.projectsBg = document.getElementById('cfg_projectsBg').value.trim();
-    cfg.resourcesBg = document.getElementById('cfg_resourcesBg').value.trim();
-    cfg.contactBg = document.getElementById('cfg_contactBg').value.trim();
-    cfg.aboutBg = document.getElementById('cfg_aboutBg').value.trim();
     cfg.email = document.getElementById('cfg_email').value.trim();
     cfg.phone = document.getElementById('cfg_phone').value.trim();
     cfg.address = document.getElementById('cfg_address').value.trim();
     cfg.wechat = document.getElementById('cfg_wechat').value.trim();
-
     saveSiteConfig(cfg);
     showToast('网站设置已保存！前台刷新即可生效', 'success');
+}
+
+// ============================================================
+//  视频管理
+// ============================================================
+function renderVideoManage() {
+    const cfg = getSiteConfig();
+    const videos = cfg.videos || [];
+
+    let listHtml = '';
+    videos.forEach((v, i) => {
+        const typeHint = v.embedUrl ? '嵌入链接' : (v.videoUrl ? '视频文件' : '占位');
+        listHtml += `
+            <div class="manage-item">
+                <div class="manage-item-info">
+                    <h4>${escapeHtml(v.title || '未命名视频')}</h4>
+                    <p>类型: ${typeHint} | 创建时间: ${v.createdAt || ''}</p>
+                </div>
+                <div class="manage-item-actions">
+                    <button class="btn btn-sm btn-warning" onclick="editVideo(${i})">&#9998; 编辑</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteVideo(${i})">&#128465; 删除</button>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById('contentArea').innerHTML = `
+        <div style="margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h3 style="font-size:18px;color:#1a2a4a;">&#127909; 视频展示管理</h3>
+                <p style="font-size:14px;color:#888;">管理前台「视频展示」区块中的视频内容</p>
+            </div>
+            <button class="btn btn-primary" onclick="openVideoEditor()">&#128228; 添加视频</button>
+        </div>
+        ${listHtml || '<p style="text-align:center;color:#999;padding:40px;">暂无视频，点击上方按钮添加</p>'}
+    `;
+}
+
+function openVideoEditor(index) {
+    const cfg = getSiteConfig();
+    const videos = cfg.videos || [];
+    const v = index !== undefined ? videos[index] : {};
+
+    document.getElementById('contentArea').innerHTML = `
+        <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:20px;">&#127909; ${index !== undefined ? '编辑视频' : '添加视频'}</h3>
+        <div style="background:#fff;border-radius:12px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,0.06);max-width:600px;">
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">视频标题 *</label>
+                <input type="text" id="vid_title" placeholder="请输入视频标题" value="${escapeHtml(v.title || '')}"
+                       style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+            </div>
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">嵌入链接（推荐）</label>
+                <input type="text" id="vid_embed" placeholder="YouTube/B站/ Vimeo 嵌入地址，如 https://player.bilibili.com/player.html?bvid=xxx"
+                       value="${escapeHtml(v.embedUrl || '')}"
+                       style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+            </div>
+            <div style="text-align:right;margin-top:20px;">
+                <button class="btn btn-outline" onclick="renderVideoManage()" style="margin-right:8px;">取消</button>
+                <button class="btn btn-primary" onclick="saveVideo(${index !== undefined ? index : -1})">&#128190; 保存</button>
+            </div>
+        </div>
+    `;
+}
+
+function editVideo(i) { openVideoEditor(i); }
+
+function saveVideo(index) {
+    const cfg = getSiteConfig();
+    if (!cfg.videos) cfg.videos = [];
+    const v = {
+        title: document.getElementById('vid_title').value.trim(),
+        embedUrl: document.getElementById('vid_embed').value.trim(),
+    };
+    if (!v.title) { showToast('请输入视频标题', 'error'); return; }
+
+    if (index >= 0) {
+        v.createdAt = cfg.videos[index].createdAt;
+        cfg.videos[index] = v;
+    } else {
+        v.id = genId();
+        v.createdAt = new Date().toLocaleDateString();
+        cfg.videos.push(v);
+    }
+    saveSiteConfig(cfg);
+    showToast('视频保存成功！', 'success');
+    renderVideoManage();
+}
+
+function deleteVideo(i) {
+    const cfg = getSiteConfig();
+    if (!cfg.videos) cfg.videos = [];
+    cfg.videos.splice(i, 1);
+    saveSiteConfig(cfg);
+    showToast('视频已删除', 'success');
+    renderVideoManage();
+}
+
+// ============================================================
+//  自定义部署区块管理
+// ============================================================
+function renderSectionsManage() {
+    const cfg = getSiteConfig();
+    const sections = cfg.customSections || [];
+
+    let listHtml = '';
+    sections.forEach((s, i) => {
+        listHtml += `
+            <div class="manage-item">
+                <div class="manage-item-info">
+                    <h4>${escapeHtml(s.title || '未命名区块')}</h4>
+                    <p>${escapeHtml(s.subtitle || '无副标题')}</p>
+                </div>
+                <div class="manage-item-actions">
+                    <button class="btn btn-sm btn-warning" onclick="editSection(${i})">&#9998; 编辑</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteSection(${i})">&#128465; 删除</button>
+                </div>
+            </div>`;
+    });
+
+    document.getElementById('contentArea').innerHTML = `
+        <div style="margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h3 style="font-size:18px;color:#1a2a4a;">&#128205; 自定义部署区块</h3>
+                <p style="font-size:14px;color:#888;">添加自定义全屏区块到前台页面，支持自定义标题、内容和背景图</p>
+            </div>
+            <button class="btn btn-primary" onclick="openSectionEditor()">&#128228; 添加区块</button>
+        </div>
+        ${listHtml || '<p style="text-align:center;color:#999;padding:40px;">暂无自定义区块，点击上方按钮添加</p>'}
+    `;
+}
+
+function openSectionEditor(index) {
+    const cfg = getSiteConfig();
+    const sections = cfg.customSections || [];
+    const s = index !== undefined ? sections[index] : {};
+
+    document.getElementById('contentArea').innerHTML = `
+        <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:20px;">&#128205; ${index !== undefined ? '编辑区块' : '添加区块'}</h3>
+        <div style="background:#fff;border-radius:12px;padding:28px;box-shadow:0 1px 4px rgba(0,0,0,0.06);max-width:700px;">
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">区块标题 *</label>
+                <input type="text" id="sec_title" placeholder="请输入区块标题" value="${escapeHtml(s.title || '')}"
+                       style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+            </div>
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">副标题</label>
+                <input type="text" id="sec_subtitle" placeholder="请输入副标题（选填）" value="${escapeHtml(s.subtitle || '')}"
+                       style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+            </div>
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">内容（HTML）</label>
+                <textarea id="sec_content" rows="6" placeholder="支持HTML格式，如卡片、文本等"
+                          style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;min-height:120px;">${escapeHtml(s.content || '')}</textarea>
+            </div>
+            <div class="form-group">
+                <label style="color:#333;font-size:14px;font-weight:500;">背景图</label>
+                <div class="upload-area" onclick="document.getElementById('sec_bg_input').click()">
+                    <div class="upload-icon">&#128247;</div>
+                    <div class="upload-text">点击上传背景图</div>
+                    <input type="file" id="sec_bg_input" accept="image/*" style="display:none"
+                           onchange="handleSectionBgUpload(this)">
+                </div>
+                <img class="upload-preview" id="sec_bg_preview" src="${s.backgroundImage || ''}" alt="预览"
+                     style="${s.backgroundImage ? 'display:block' : ''}">
+                <div class="upload-remove ${s.backgroundImage ? 'show' : ''}"
+                     onclick="removeSectionBg()">&#128465; 移除图片</div>
+            </div>
+            <div style="text-align:right;margin-top:20px;">
+                <button class="btn btn-outline" onclick="renderSectionsManage()" style="margin-right:8px;">取消</button>
+                <button class="btn btn-primary" onclick="saveSection(${index !== undefined ? index : -1})">&#128190; 保存</button>
+            </div>
+        </div>
+    `;
+}
+
+let sectionBgTemp = '';
+
+function editSection(i) { sectionBgTemp = ''; openSectionEditor(i); }
+
+function handleSectionBgUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    fileToBase64(file).then(base64 => {
+        return compressImage(base64, 1600, 0.7);
+    }).then(compressed => {
+        sectionBgTemp = compressed;
+        const preview = document.getElementById('sec_bg_preview');
+        if (preview) { preview.src = compressed; preview.style.display = 'block'; preview.classList.add('show'); }
+        const removeBtn = preview ? preview.nextElementSibling : null;
+        if (removeBtn) removeBtn.classList.add('show');
+    });
+}
+
+function removeSectionBg() {
+    sectionBgTemp = '';
+    const preview = document.getElementById('sec_bg_preview');
+    if (preview) { preview.style.display = 'none'; preview.classList.remove('show'); }
+    const removeBtn = preview ? preview.nextElementSibling : null;
+    if (removeBtn) removeBtn.classList.remove('show');
+}
+
+function saveSection(index) {
+    const cfg = getSiteConfig();
+    if (!cfg.customSections) cfg.customSections = [];
+    const s = {
+        title: document.getElementById('sec_title').value.trim(),
+        subtitle: document.getElementById('sec_subtitle').value.trim(),
+        content: document.getElementById('sec_content').value.trim(),
+        backgroundImage: sectionBgTemp || (cfg.customSections[index] || {}).backgroundImage || '',
+    };
+    if (!s.title) { showToast('请输入区块标题', 'error'); return; }
+
+    if (index >= 0) {
+        cfg.customSections[index] = s;
+    } else {
+        s.id = genId();
+        cfg.customSections.push(s);
+    }
+    saveSiteConfig(cfg);
+    showToast('区块保存成功！前台刷新即可看到', 'success');
+    renderSectionsManage();
+}
+
+function deleteSection(i) {
+    const cfg = getSiteConfig();
+    if (!cfg.customSections) cfg.customSections = [];
+    cfg.customSections.splice(i, 1);
+    saveSiteConfig(cfg);
+    showToast('区块已删除', 'success');
+    renderSectionsManage();
 }
 
 // ESC 键关闭模态框
