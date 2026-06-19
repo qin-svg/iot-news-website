@@ -983,19 +983,19 @@ function renderContact(cfg) {
 // ============================================================
 function renderNav(cfg) {
     const nav = document.getElementById('navLinks');
-    let html = '<a data-target="hero" class="active" onclick="scrollTo(\'hero\')">首页</a>';
-    html += '<a data-target="news" onclick="scrollTo(\'news\')">行业资讯</a>';
-    html += '<a data-target="tech" onclick="scrollTo(\'tech\')">技术干货</a>';
-    html += '<a data-target="projects" onclick="scrollTo(\'projects\')">项目案例</a>';
-    html += '<a data-target="resources" onclick="scrollTo(\'resources\')">学习资源</a>';
+    let html = '<a data-target="hero" class="active" onclick="scrollToSection(\'hero\')">首页</a>';
+    html += '<a data-target="news" onclick="scrollToSection(\'news\')">行业资讯</a>';
+    html += '<a data-target="tech" onclick="scrollToSection(\'tech\')">技术干货</a>';
+    html += '<a data-target="projects" onclick="scrollToSection(\'projects\')">项目案例</a>';
+    html += '<a data-target="resources" onclick="scrollToSection(\'resources\')">学习资源</a>';
     if (cfg.videos && cfg.videos.length > 0) {
-        html += '<a data-target="video" onclick="scrollTo(\'video\')">视频展示</a>';
+        html += '<a data-target="video" onclick="scrollToSection(\'video\')">视频展示</a>';
     }
     (cfg.customSections || []).forEach(sec => {
-        html += `<a data-target="custom-${sec.id}" onclick="scrollTo('custom-${sec.id}')">${escapeHtml(sec.title || '区块')}</a>`;
+        html += `<a data-target="custom-${sec.id}" onclick="scrollToSection('custom-${sec.id}')">${escapeHtml(sec.title || '区块')}</a>`;
     });
-    html += '<a data-target="contact" onclick="scrollTo(\'contact\')">联系我们</a>';
-    html += '<a data-target="about" onclick="scrollTo(\'about\')">关于我们</a>';
+    html += '<a data-target="contact" onclick="scrollToSection(\'contact\')">联系我们</a>';
+    html += '<a data-target="about" onclick="scrollToSection(\'about\')">关于我们</a>';
     nav.innerHTML = html;
 }
 
@@ -1018,19 +1018,19 @@ function renderFooter(cfg) {
         {id:'projects', label:'项目案例'},
         {id:'resources', label:'学习资源'}
     ];
-    cats.forEach(c => { html += `<a href="#${c.id}" onclick="scrollTo('${c.id}');return false;">${c.label}</a>`; });
+    cats.forEach(c => { html += `<a href="#${c.id}" onclick="scrollToSection('${c.id}');return false;">${c.label}</a>`; });
     if (cfg.videos && cfg.videos.length > 0) {
-        html += '<a href="#video" onclick="scrollTo(\'video\');return false;">视频展示</a>';
+        html += '<a href="#video" onclick="scrollToSection(\'video\');return false;">视频展示</a>';
     }
     (cfg.customSections || []).forEach(sec => {
-        html += `<a href="#custom-${sec.id}" onclick="scrollTo('custom-${sec.id}');return false;">${escapeHtml(sec.title || '区块')}</a>`;
+        html += `<a href="#custom-${sec.id}" onclick="scrollToSection('custom-${sec.id}');return false;">${escapeHtml(sec.title || '区块')}</a>`;
     });
     html += '</div>';
 
     // 第三列：关于我们
     html += '<div class="footer-col"><h3>关于我们</h3>';
-    html += '<a href="#about" onclick="scrollTo(\'about\');return false;">平台介绍</a>';
-    html += '<a href="#contact" onclick="scrollTo(\'contact\');return false;">联系我们</a>';
+    html += '<a href="#about" onclick="scrollToSection(\'about\');return false;">平台介绍</a>';
+    html += '<a href="#contact" onclick="scrollToSection(\'contact\');return false;">联系我们</a>';
     html += '</div>';
 
     // 第四列：管理入口
@@ -1045,12 +1045,16 @@ function renderFooter(cfg) {
 // ============================================================
 //  滚动导航
 // ============================================================
-function scrollTo(id) {
+window.scrollToSection = function(id) {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        console.warn('Section #' + id + ' not found');
+    }
     const nav = document.getElementById('navLinks');
     if (nav) nav.classList.remove('open');
-}
+};
 
 function toggleMobileMenu() {
     document.getElementById('navLinks').classList.toggle('open');
