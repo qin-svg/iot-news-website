@@ -552,15 +552,15 @@
         </div>
         <div class="footer-col">
             <h3>快速导航</h3>
-            <a href="#news" onclick="scrollTo('news');return false;">行业资讯</a>
-            <a href="#tech" onclick="scrollTo('tech');return false;">技术干货</a>
-            <a href="#projects" onclick="scrollTo('projects');return false;">项目案例</a>
-            <a href="#resources" onclick="scrollTo('resources');return false;">学习资源</a>
+            <a href="#news" onclick="scrollToSection('news');return false;">行业资讯</a>
+            <a href="#tech" onclick="scrollToSection('tech');return false;">技术干货</a>
+            <a href="#projects" onclick="scrollToSection('projects');return false;">项目案例</a>
+            <a href="#resources" onclick="scrollToSection('resources');return false;">学习资源</a>
         </div>
         <div class="footer-col">
             <h3>关于我们</h3>
-            <a href="#about" onclick="scrollTo('about');return false;">平台介绍</a>
-            <a href="#contact" onclick="scrollTo('contact');return false;">联系我们</a>
+            <a href="#about" onclick="scrollToSection('about');return false;">平台介绍</a>
+            <a href="#contact" onclick="scrollToSection('contact');return false;">联系我们</a>
         </div>
         <div class="footer-col">
             <h3>管理入口</h3>
@@ -1006,26 +1006,26 @@ function renderContact(cfg) {
 // ============================================================
 function renderNav(cfg) {
     const nav = document.getElementById('navLinks');
-    let html = '<a data-target="hero" class="active" onclick="scrollTo(\'hero\')">首页</a>';
-    html += '<a data-target="news" onclick="scrollTo(\'news\')">行业资讯</a>';
-    html += '<a data-target="tech" onclick="scrollTo(\'tech\')">技术干货</a>';
-    html += '<a data-target="projects" onclick="scrollTo(\'projects\')">项目案例</a>';
-    html += '<a data-target="resources" onclick="scrollTo(\'resources\')">学习资源</a>';
+    let html = '<a data-target="hero" class="active" onclick="scrollToSection(\'hero\')">首页</a>';
+    html += '<a data-target="news" onclick="scrollToSection(\'news\')">行业资讯</a>';
+    html += '<a data-target="tech" onclick="scrollToSection(\'tech\')">技术干货</a>';
+    html += '<a data-target="projects" onclick="scrollToSection(\'projects\')">项目案例</a>';
+    html += '<a data-target="resources" onclick="scrollToSection(\'resources\')">学习资源</a>';
     if (cfg.videos && cfg.videos.length > 0) {
-        html += '<a data-target="video" onclick="scrollTo(\'video\')">视频展示</a>';
+        html += '<a data-target="video" onclick="scrollToSection(\'video\')">视频展示</a>';
     }
     (cfg.customSections || []).forEach(sec => {
-        html += `<a data-target="custom-${sec.id}" onclick="scrollTo('custom-${sec.id}')">${escapeHtml(sec.title || '区块')}</a>`;
+        html += `<a data-target="custom-${sec.id}" onclick="scrollToSection('custom-${sec.id}')">${escapeHtml(sec.title || '区块')}</a>`;
     });
-    html += '<a data-target="contact" onclick="scrollTo(\'contact\')">联系我们</a>';
-    html += '<a data-target="about" onclick="scrollTo(\'about\')">关于我们</a>';
+    html += '<a data-target="contact" onclick="scrollToSection(\'contact\')">联系我们</a>';
+    html += '<a data-target="about" onclick="scrollToSection(\'about\')">关于我们</a>';
     nav.innerHTML = html;
 }
 
 // ============================================================
 //  滚动导航
 // ============================================================
-function scrollTo(id) {
+function scrollToSection(id) {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     document.getElementById('navLinks').classList.remove('open');
