@@ -954,10 +954,78 @@ function executeDelete() {
 //  网站设置（全可视化编辑：Logo/名称/字体/颜色/背景/文字/排版）
 // ============================================================
 function renderSiteConfig() {
-    const cfg = getSiteConfig();
-    const bgKeys = ['heroBg','newsBg','techBg','projectsBg','resourcesBg','contactBg','aboutBg'];
-    const bgLabels = ['Hero 首屏','行业资讯区块','技术干货区块','项目案例区块','学习资源区块','联系我们区块','关于我们区块'];
-    const c = cfg.colors || {};
+    try {
+        const cfg = getSiteConfig();
+        const bgKeys = ['heroBg','newsBg','techBg','projectsBg','resourcesBg','contactBg','aboutBg'];
+        const bgLabels = ['Hero 首屏','行业资讯区块','技术干货区块','项目案例区块','学习资源区块','联系我们区块','关于我们区块'];
+        const c = cfg.colors || {};
+        if (!c.primary) c.primary = '#00b4ff';
+        if (!c.accent) c.accent = '#00d4ff';
+        if (!c.cardBg) c.cardBg = '#ffffff';
+        if (!c.bodyBg) c.bodyBg = '#f0f2f5';
+        if (!c.textSecondary) c.textSecondary = '#555555';
+        if (!c.aboutFeatBg) c.aboutFeatBg = '#f8faff';
+        if (!c.cardRadius) c.cardRadius = '16px';
+        if (!c.cardShadow) c.cardShadow = '0 4px 16px rgba(0,0,0,0.06)';
+        if (!c.cardHoverShadow) c.cardHoverShadow = '0 16px 40px rgba(0,0,0,0.12)';
+        if (!c.cardTitleColor) c.cardTitleColor = '#1a2a4a';
+        if (!c.cardDescColor) c.cardDescColor = '#888';
+        if (!c.cardMetaColor) c.cardMetaColor = '#bbb';
+        if (!c.cardTagBg) c.cardTagBg = '#e6f7ff';
+        if (!c.cardTagColor) c.cardTagColor = '#0066cc';
+        if (!c.fontBody) c.fontBody = '-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+
+        if (!cfg.siteName) cfg.siteName = 'IoT资讯';
+        if (!cfg.heroH1) cfg.heroH1 = '探索物联网的无限可能';
+        if (!cfg.heroP) cfg.heroP = '连接万物，智创未来';
+        if (!cfg.heroText) cfg.heroText = '#ffffff';
+        if (!cfg.heroSubText) cfg.heroSubText = '#ffffff';
+        if (!cfg.heroH1Size) cfg.heroH1Size = '52px';
+        if (!cfg.heroPSize) cfg.heroPSize = '20px';
+        if (cfg.heroOverlayOpacity == null) cfg.heroOverlayOpacity = 0.55;
+        if (!cfg.navBg) cfg.navBg = 'rgba(10,22,40,0.92)';
+        if (!cfg.navText) cfg.navText = 'rgba(255,255,255,0.8)';
+        if (!cfg.navHoverBg) cfg.navHoverBg = 'rgba(0,180,255,0.2)';
+        if (!cfg.navActiveText) cfg.navActiveText = '#fff';
+        if (!cfg.sectionH2Size) cfg.sectionH2Size = '36px';
+        if (!cfg.sectionPSize) cfg.sectionPSize = '16px';
+        if (!cfg.cardTitleSize) cfg.cardTitleSize = '18px';
+        if (!cfg.contactH1) cfg.contactH1 = '\u{1F4F1} 联系我们';
+        if (!cfg.contactSub) cfg.contactSub = '有任何问题或建议，欢迎随时与我们取得联系';
+        if (!cfg.aboutH1) cfg.aboutH1 = '';
+        if (!cfg.aboutContent) cfg.aboutContent = '';
+        if (!cfg.footerBg) cfg.footerBg = '#0a1628';
+        if (!cfg.footerText) cfg.footerText = 'rgba(255,255,255,0.6)';
+        if (!cfg.footerHeading) cfg.footerHeading = '#fff';
+        if (!cfg.footerCol1Title) cfg.footerCol1Title = '\u{1F4E1} IoT资讯';
+        if (!cfg.footerCol1Desc) cfg.footerCol1Desc = '物联网工程专业门户平台<br>连接万物，智创未来';
+        if (!cfg.footerCol2Title) cfg.footerCol2Title = '快速导航';
+        if (!cfg.footerCol2Links) cfg.footerCol2Links = 'news|行业资讯,tech|技术干货,projects|项目案例,resources|学习资源';
+        if (!cfg.footerCol3Title) cfg.footerCol3Title = '关于我们';
+        if (!cfg.footerCol3Links) cfg.footerCol3Links = 'about|平台介绍,contact|联系我们';
+        if (!cfg.footerCol4Title) cfg.footerCol4Title = '管理入口';
+        if (!cfg.aboutFeature1Title) cfg.aboutFeature1Title = '行业资讯';
+        if (!cfg.aboutFeature1Desc) cfg.aboutFeature1Desc = '实时跟踪物联网产业最新动态';
+        if (!cfg.aboutFeature1Icon) cfg.aboutFeature1Icon = '\u{1F4F0}';
+        if (!cfg.aboutFeature2Title) cfg.aboutFeature2Title = '技术干货';
+        if (!cfg.aboutFeature2Desc) cfg.aboutFeature2Desc = '深入浅出解析核心技术要点';
+        if (!cfg.aboutFeature2Icon) cfg.aboutFeature2Icon = '\u{1F527}';
+        if (!cfg.aboutFeature3Title) cfg.aboutFeature3Title = '项目案例';
+        if (!cfg.aboutFeature3Desc) cfg.aboutFeature3Desc = '真实场景下的项目实践分享';
+        if (!cfg.aboutFeature3Icon) cfg.aboutFeature3Icon = '\u{1F3AF}‍\u{1F4BB}';
+        if (!cfg.aboutFeature4Title) cfg.aboutFeature4Title = '学习资源';
+        if (!cfg.aboutFeature4Desc) cfg.aboutFeature4Desc = '精选课程与工具推荐汇总';
+        if (!cfg.aboutFeature4Icon) cfg.aboutFeature4Icon = '\u{1F4D8}️';
+        if (!cfg.email) cfg.email = '';
+        if (!cfg.phone) cfg.phone = '';
+        if (!cfg.address) cfg.address = '';
+        if (!cfg.wechat) cfg.wechat = '';
+        if (!cfg.contactEmail) cfg.contactEmail = cfg.email;
+        if (!cfg.contactPhone) cfg.contactPhone = cfg.phone;
+        if (!cfg.contactAddress) cfg.contactAddress = cfg.address;
+        if (!cfg.contactWechat) cfg.contactWechat = cfg.wechat;
+        if (!cfg.videos) cfg.videos = [];
+        if (!cfg.customSections) cfg.customSections = [];
 
     // 背景图HTML
     let bgHtml = '';
@@ -1540,6 +1608,7 @@ function removeLogo() {
 
 function saveSiteConfigData() {
     const cfg = getSiteConfig();
+    if (!cfg.colors) cfg.colors = {};
 
     // 基本信息
     cfg.siteName = document.getElementById('cfg_siteName').value.trim() || 'IoT资讯';
@@ -1557,6 +1626,8 @@ function saveSiteConfigData() {
     cfg.heroH1Size = document.getElementById('cfg_heroH1Size').value.trim() || '52px';
     cfg.heroPSize = document.getElementById('cfg_heroPSize').value.trim() || '20px';
     cfg.heroCanvas = document.getElementById('cfg_heroCanvas').checked;
+    const heroOpSlider = document.getElementById('cfg_heroOverlayOpacity');
+    if (heroOpSlider) cfg.heroOverlayOpacity = parseFloat(heroOpSlider.value);
 
     // 导航栏
     const navBgColor = document.getElementById('cfg_navBg').value;
