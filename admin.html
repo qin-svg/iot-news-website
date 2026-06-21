@@ -542,11 +542,38 @@ function getSiteConfig() {
         return cfg;
     }
     return {
+        siteName: 'IoT资讯', siteDesc: '物联网工程专业门户',
+        navBg: 'rgba(10,22,40,0.92)', navText: 'rgba(255,255,255,0.8)', navHoverBg: 'rgba(0,180,255,0.2)', navActiveText: '#fff',
+        logoIcon: '', logoImg: '',
+        heroBgImg: '', heroOverlayOpacity: 0.55, heroH1: '探索物联网的无限可能', heroP: '连接万物，智创未来 — 汇聚行业前沿动态、技术干货、项目案例与学习资源',
+        heroText: '#ffffff', heroSubText: '#ffffff', heroH1Size: '52px', heroPSize: '20px', heroCanvas: true,
         heroBg: '', newsBg: '', techBg: '', projectsBg: '', resourcesBg: '',
         contactBg: '', aboutBg: '',
-        email: '', phone: '', address: '', wechat: '',
+        newsH2: '', newsSub: '', techH2: '', techSub: '', projectsH2: '', projectsSub: '', resourcesH2: '', resourcesSub: '',
+        contactH1: '\u{1F4F1} 联系我们', contactSub: '有任何问题或建议，欢迎随时与我们取得联系',
+        contactEmail: '', contactPhone: '', contactAddress: '', contactWechat: '',
+        aboutH1: '', aboutContent: '',
+        aboutFeature1Title: '行业资讯', aboutFeature1Desc: '实时跟踪物联网产业最新动态', aboutFeature1Icon: '\u{1F4F0}',
+        aboutFeature2Title: '技术干货', aboutFeature2Desc: '深入浅出解析核心技术要点', aboutFeature2Icon: '\u{1F527}',
+        aboutFeature3Title: '项目案例', aboutFeature3Desc: '真实场景下的项目实践分享', aboutFeature3Icon: '\u{1F3AF}‍\u{1F4BB}',
+        aboutFeature4Title: '学习资源', aboutFeature4Desc: '精选课程与工具推荐汇总', aboutFeature4Icon: '\u{1F4D8}️',
+        footerBg: '#0a1628', footerText: 'rgba(255,255,255,0.6)', footerHeading: '#fff',
+        footerCol1Title: '\u{1F4E1} IoT资讯', footerCol1Desc: '物联网工程专业门户平台<br>连接万物，智创未来',
+        footerCol2Title: '快速导航', footerCol2Links: 'news|行业资讯,tech|技术干货,projects|项目案例,resources|学习资源',
+        footerCol3Title: '关于我们', footerCol3Links: 'about|平台介绍,contact|联系我们',
+        footerCol4Title: '管理入口',
         videos: [],
         customSections: [],
+        colors: {
+            primary: '#00b4ff', accent: '#00d4ff',
+            cardBg: '#ffffff', cardRadius: '16px', cardShadow: '0 4px 16px rgba(0,0,0,0.06)', cardHoverShadow: '0 16px 40px rgba(0,0,0,0.12)',
+            cardTitleColor: '#1a2a4a', cardDescColor: '#888', cardMetaColor: '#bbb',
+            cardTagBg: '#e6f7ff', cardTagColor: '#0066cc',
+            textSecondary: '#555555', bodyBg: '#f0f2f5',
+            fontBody: '-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif',
+            aboutFeatBg: '#f8faff'
+        },
+        sectionH2Size: '36px', sectionPSize: '16px', cardTitleSize: '18px'
     };
 }
 function saveSiteConfig(cfg) {
@@ -1563,10 +1590,10 @@ function saveSiteConfigData() {
     cfg.colors.aboutFeatBg = document.getElementById('cfg_aboutFeatBg').value;
 
     // 联系我们
-    cfg.email = document.getElementById('cfg_email').value.trim();
-    cfg.phone = document.getElementById('cfg_phone').value.trim();
-    cfg.address = document.getElementById('cfg_address').value.trim();
-    cfg.wechat = document.getElementById('cfg_wechat').value.trim();
+    cfg.contactEmail = cfg.email = document.getElementById('cfg_email').value.trim();
+    cfg.contactPhone = cfg.phone = document.getElementById('cfg_phone').value.trim();
+    cfg.contactAddress = cfg.address = document.getElementById('cfg_address').value.trim();
+    cfg.contactWechat = cfg.wechat = document.getElementById('cfg_wechat').value.trim();
 
     // 关于我们
     cfg.aboutH1 = document.getElementById('cfg_aboutH1').value.trim();
