@@ -924,13 +924,15 @@ function executeDelete() {
 }
 
 // ============================================================
-//  网站设置（背景图上传 + 联系方式）
+//  网站设置（全可视化编辑：Logo/名称/字体/颜色/背景/文字/排版）
 // ============================================================
 function renderSiteConfig() {
     const cfg = getSiteConfig();
     const bgKeys = ['heroBg','newsBg','techBg','projectsBg','resourcesBg','contactBg','aboutBg'];
     const bgLabels = ['Hero 首屏','行业资讯区块','技术干货区块','项目案例区块','学习资源区块','联系我们区块','关于我们区块'];
+    const c = cfg.colors || {};
 
+    // 背景图HTML
     let bgHtml = '';
     bgKeys.forEach((key, i) => {
         const val = cfg[key] || '';
@@ -954,49 +956,489 @@ function renderSiteConfig() {
     });
 
     document.getElementById('contentArea').innerHTML = `
-        <div style="margin-bottom:24px;">
-            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127970; 网站外观设置</h3>
-            <p style="font-size:14px;color:#888;">上传各区块的背景图片，留空则使用默认渐变背景。</p>
-        </div>
-        <div class="config-grid">${bgHtml}</div>
-
-        <div style="margin-top:32px;">
-            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128222; 联系方式设置</h3>
-            <p style="font-size:14px;color:#888;margin-bottom:20px;">设置前台「联系我们」页面展示的联系方式。</p>
+        <!-- 第1部分：基本信息 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127760; 基本信息</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">设置网站名称、Logo、描述等全局信息</p>
             <div class="config-grid">
                 <div class="config-card">
-                    <h3>&#128231; 电子邮箱</h3>
+                    <h3>&#128188; 网站名称</h3>
                     <div class="form-group">
-                        <label>邮箱地址</label>
-                        <input type="text" id="cfg_email" placeholder="example@iot.com" value="${escapeHtml(cfg.email || '')}">
+                        <label>网站标题</label>
+                        <input type="text" id="cfg_siteName" placeholder="如：IoT资讯" value="${escapeHtml(cfg.siteName || 'IoT资讯')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
                     </div>
                 </div>
                 <div class="config-card">
-                    <h3>&#128222; 联系电话</h3>
+                    <h3>&#128196; 网站副标题</h3>
                     <div class="form-group">
-                        <label>电话号码</label>
-                        <input type="text" id="cfg_phone" placeholder="010-12345678" value="${escapeHtml(cfg.phone || '')}">
+                        <label>网站描述</label>
+                        <input type="text" id="cfg_siteDesc" placeholder="如：物联网工程专业门户" value="${escapeHtml(cfg.siteDesc || '物联网工程专业门户')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
                     </div>
                 </div>
                 <div class="config-card">
-                    <h3>&#128205; 联系地址</h3>
+                    <h3>&#128247; Logo 图标</h3>
                     <div class="form-group">
-                        <label>地址</label>
-                        <input type="text" id="cfg_address" placeholder="XX省XX市XX路XX号" value="${escapeHtml(cfg.address || '')}">
+                        <label>图标 Emoji（留空使用文字Logo）</label>
+                        <input type="text" id="cfg_logoIcon" placeholder="如：🔌 或 ⚡" value="${escapeHtml(cfg.logoIcon || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
                     </div>
-                </div>
-                <div class="config-card">
-                    <h3>&#128172; 微信公众号</h3>
-                    <div class="form-group">
-                        <label>微信号/公众号名</label>
-                        <input type="text" id="cfg_wechat" placeholder="IoT资讯官方" value="${escapeHtml(cfg.wechat || '')}">
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Logo 图片上传</label>
+                        <div class="upload-area" onclick="document.getElementById('logoImgInput').click()">
+                            <div class="upload-icon">&#128247;</div>
+                            <div class="upload-text">点击上传Logo图片</div>
+                            <input type="file" id="logoImgInput" accept="image/*" style="display:none"
+                                   onchange="handleLogoUpload(this)">
+                        </div>
+                        <img class="upload-preview" id="logoPreview" src="${cfg.logoImg || ''}" alt="Logo预览"
+                             style="${cfg.logoImg ? 'display:block' : ''}">
+                        <div class="upload-remove ${cfg.logoImg ? 'show' : ''}" id="logoRemove" onclick="removeLogo()">&#128465; 移除Logo</div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 第2部分：Hero首屏 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127758; Hero 首屏设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">设置首页顶部大图的标题、副标题和文字样式</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#128220; H1 标题</h3>
+                    <div class="form-group">
+                        <label>首页大标题</label>
+                        <input type="text" id="cfg_heroH1" placeholder="探索物联网的无限可能" value="${escapeHtml(cfg.heroH1 || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128221; 副标题</h3>
+                    <div class="form-group">
+                        <label>首页副标题</label>
+                        <input type="text" id="cfg_heroP" placeholder="连接万物，智创未来" value="${escapeHtml(cfg.heroP || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128336; 文字颜色</h3>
+                    <div class="form-group">
+                        <label>H1 颜色</label>
+                        <input type="color" id="cfg_heroText" value="${cfg.heroText || '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                    <div class="form-group">
+                        <label>副标题颜色</label>
+                        <input type="color" id="cfg_heroSubText" value="${cfg.heroSubText || '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128200; 字号设置</h3>
+                    <div class="form-group">
+                        <label>H1 字号</label>
+                        <input type="text" id="cfg_heroH1Size" placeholder="52px" value="${cfg.heroH1Size || '52px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>副标题字号</label>
+                        <input type="text" id="cfg_heroPSize" placeholder="20px" value="${cfg.heroPSize || '20px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128161; 特效选项</h3>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="cfg_heroCanvas" ${cfg.heroCanvas ? 'checked' : ''}>
+                            启用科技艺术粒子动画（Canvas神经网络）
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>遮罩透明度（0-1）</label>
+                        <input type="range" id="cfg_heroOverlayOpacity" min="0" max="1" step="0.05" value="${parseFloat(cfg.heroOverlayOpacity || 0.55)}"
+                               oninput="document.getElementById('heroOverlayOpacityVal').textContent=this.value"
+                               style="width:100%;">
+                        <span id="heroOverlayOpacityVal" style="font-size:13px;color:#888;">${cfg.heroOverlayOpacity || 0.55}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第3部分：导航栏 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128193; 导航栏设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">自定义顶部导航栏的颜色和文字样式</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#127912; 导航栏颜色</h3>
+                    <div class="form-group">
+                        <label>背景色</label>
+                        <input type="color" id="cfg_navBg" value="${cfg.navBg.startsWith('#') ? cfg.navBg : '#0a1628'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                        <input type="text" id="cfg_navBg_text" placeholder="或输入RGBA值" value="${cfg.navBg.startsWith('#') ? '' : cfg.navBg}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;margin-top:8px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128187; 导航文字颜色</h3>
+                    <div class="form-group">
+                        <label>普通文字</label>
+                        <input type="color" id="cfg_navText" value="${cfg.navText.startsWith('#') ? cfg.navText : '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                        <input type="text" id="cfg_navText_text" placeholder="或输入RGBA值" value="${cfg.navText.startsWith('#') ? '' : cfg.navText}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;margin-top:8px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128161; 悬停/激活效果</h3>
+                    <div class="form-group">
+                        <label>悬停背景</label>
+                        <input type="color" id="cfg_navHoverBg" value="${cfg.navHoverBg.startsWith('#') ? cfg.navHoverBg : '#0066ff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                    <div class="form-group">
+                        <label>激活文字</label>
+                        <input type="color" id="cfg_navActiveText" value="${cfg.navActiveText || '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第4部分：字体设置 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128221; 字体设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">自定义全站字体和大小</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#128221; 字体族</h3>
+                    <div class="form-group">
+                        <label>正文</label>
+                        <input type="text" id="cfg_fontBody" placeholder="-apple-system, sans-serif" value="${escapeHtml(c.fontBody || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="cfg_fontFallback" checked> 使用安全字体回退（系统默认）
+                        </label>
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128200; 标题字号</h3>
+                    <div class="form-group">
+                        <label>区块标题(H2)</label>
+                        <input type="text" id="cfg_sectionH2Size" placeholder="36px" value="${cfg.sectionH2Size || '36px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>正文段落</label>
+                        <input type="text" id="cfg_sectionPSize" placeholder="16px" value="${cfg.sectionPSize || '16px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128196; 卡片标题</h3>
+                    <div class="form-group">
+                        <label>卡片标题字号</label>
+                        <input type="text" id="cfg_cardTitleSize" placeholder="18px" value="${cfg.cardTitleSize || '18px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第5部分：颜色主题 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127912; 颜色主题</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">自定义网站主色调和辅助色</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#127912; 主色调</h3>
+                    <div class="form-group">
+                        <label>品牌主色</label>
+                        <input type="color" id="cfg_primary" value="${c.primary || '#00b4ff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#127912; 强调色</h3>
+                    <div class="form-group">
+                        <label>链接/按钮强调色</label>
+                        <input type="color" id="cfg_accent" value="${c.accent || '#00d4ff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#127912; 背景色</h3>
+                    <div class="form-group">
+                        <label>页面背景</label>
+                        <input type="color" id="cfg_bodyBg" value="${c.bodyBg || '#f0f2f5'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128336; 文字颜色</h3>
+                    <div class="form-group">
+                        <label>次要文字</label>
+                        <input type="color" id="cfg_textSecondary" value="${c.textSecondary || '#555555'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128196; 卡片样式</h3>
+                    <div class="form-group">
+                        <label>卡片背景</label>
+                        <input type="color" id="cfg_cardBg" value="${c.cardBg || '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                    <div class="form-group">
+                        <label>卡片圆角</label>
+                        <input type="text" id="cfg_cardRadius" placeholder="16px" value="${c.cardRadius || '16px'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#127758; 关于我们</h3>
+                    <div class="form-group">
+                        <label>特色方块背景</label>
+                        <input type="color" id="cfg_aboutFeatBg" value="${c.aboutFeatBg || '#f8faff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第6部分：区块背景图 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127758; 区块背景图片</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">上传各区块的背景图片，留空则使用默认渐变背景</p>
+            <div class="config-grid">${bgHtml}</div>
+        </div>
+
+        <!-- 第7部分：Hero首屏背景图 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127758; Hero 首屏背景</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">首页顶部大图</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#128247; Hero 背景图</h3>
+                    <div class="upload-area" onclick="document.getElementById('upload_heroBg').click()">
+                        <div class="upload-icon">&#128247;</div>
+                        <div class="upload-text">点击上传Hero背景图</div>
+                        <input type="file" id="upload_heroBg" accept="image/*" style="display:none"
+                               onchange="handleBgUpload('heroBg', this.files[0])">
+                    </div>
+                    <img class="upload-preview" id="prev_heroBg" src="${cfg.heroBg || ''}" alt="预览"
+                         style="${cfg.heroBg ? 'display:block' : ''}">
+                    <div class="upload-remove ${cfg.heroBg ? 'show' : ''}" onclick="removeBgImage('heroBg')">&#128465; 移除图片</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第8部分：联系我们 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128222; 联系我们设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">设置前台「联系我们」页面展示的联系方式</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#128231; 电子邮箱</h3>
+                    <div class="form-group">
+                        <input type="text" id="cfg_email" placeholder="example@iot.com" value="${escapeHtml(cfg.email || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128222; 联系电话</h3>
+                    <div class="form-group">
+                        <input type="text" id="cfg_phone" placeholder="010-12345678" value="${escapeHtml(cfg.phone || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128205; 联系地址</h3>
+                    <div class="form-group">
+                        <input type="text" id="cfg_address" placeholder="XX省XX市XX路XX号" value="${escapeHtml(cfg.address || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128172; 微信公众号</h3>
+                    <div class="form-group">
+                        <input type="text" id="cfg_wechat" placeholder="IoT资讯官方" value="${escapeHtml(cfg.wechat || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第9部分：关于我们 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#127758; 关于我们设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">自定义「关于我们」页面的内容和特色方块</p>
+            <div class="config-grid">
+                <div class="config-card" style="grid-column:span 2;">
+                    <h3>&#128221; 关于内容</h3>
+                    <div class="form-group">
+                        <label>页面标题</label>
+                        <input type="text" id="cfg_aboutH1" placeholder="关于 IoT资讯" value="${escapeHtml(cfg.aboutH1 || '')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>详细介绍（支持HTML）</label>
+                        <textarea id="cfg_aboutContent" rows="5" placeholder="请输入关于我们的详细介绍..."
+                                  style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;min-height:120px;">${escapeHtml(cfg.aboutContent || '')}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="config-grid" style="margin-top:16px;">
+                <div class="config-card">
+                    <h3>&#128188; 特色方块 1</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_af1Title" value="${escapeHtml(cfg.aboutFeature1Title || '行业资讯')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" id="cfg_af1Desc" value="${escapeHtml(cfg.aboutFeature1Desc || '实时跟踪物联网产业最新动态')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>图标 Emoji</label>
+                        <input type="text" id="cfg_af1Icon" value="${cfg.aboutFeature1Icon || '\u{1F4F0}'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128188; 特色方块 2</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_af2Title" value="${escapeHtml(cfg.aboutFeature2Title || '技术干货')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" id="cfg_af2Desc" value="${escapeHtml(cfg.aboutFeature2Desc || '深入浅出解析核心技术要点')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>图标 Emoji</label>
+                        <input type="text" id="cfg_af2Icon" value="${cfg.aboutFeature2Icon || '\u{1F527}'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128188; 特色方块 3</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_af3Title" value="${escapeHtml(cfg.aboutFeature3Title || '项目案例')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" id="cfg_af3Desc" value="${escapeHtml(cfg.aboutFeature3Desc || '真实场景下的项目实践分享')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>图标 Emoji</label>
+                        <input type="text" id="cfg_af3Icon" value="${cfg.aboutFeature3Icon || '\u{1F3AF}‍\u{1F4BB}'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128188; 特色方块 4</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_af4Title" value="${escapeHtml(cfg.aboutFeature4Title || '学习资源')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" id="cfg_af4Desc" value="${escapeHtml(cfg.aboutFeature4Desc || '精选课程与工具推荐汇总')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>图标 Emoji</label>
+                        <input type="text" id="cfg_af4Icon" value="${cfg.aboutFeature4Icon || '\u{1F4D8}️'}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第10部分：页脚 -->
+        <div style="margin-bottom:32px;">
+            <h3 style="font-size:18px;color:#1a2a4a;margin-bottom:8px;">&#128196; 页脚设置</h3>
+            <p style="font-size:14px;color:#888;margin-bottom:20px;">自定义页脚内容和样式</p>
+            <div class="config-grid">
+                <div class="config-card">
+                    <h3>&#127912; 页脚颜色</h3>
+                    <div class="form-group">
+                        <label>背景色</label>
+                        <input type="color" id="cfg_footerBg" value="${cfg.footerBg || '#0a1628'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                    <div class="form-group">
+                        <label>文字颜色</label>
+                        <input type="color" id="cfg_footerText" value="${cfg.footerText.startsWith('#') ? cfg.footerText : '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                        <input type="text" id="cfg_footerText_text" placeholder="或输入RGBA值" value="${cfg.footerText.startsWith('#') ? '' : cfg.footerText}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;margin-top:8px;">
+                    </div>
+                    <div class="form-group">
+                        <label>标题颜色</label>
+                        <input type="color" id="cfg_footerHeading" value="${cfg.footerHeading || '#ffffff'}"
+                               style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:8px;padding:4px;cursor:pointer;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128221; 页脚列1（左侧）</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_fc1Title" value="${escapeHtml(cfg.footerCol1Title || ('\u{1F4E1} '+(cfg.siteName||'IoT资讯')))}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <input type="text" id="cfg_fc1Desc" value="${escapeHtml(cfg.footerCol1Desc || '物联网工程专业门户平台<br>连接万物，智创未来')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128221; 页脚列2（快速导航）</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_fc2Title" value="${escapeHtml(cfg.footerCol2Title || '快速导航')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>链接（每行一条，格式：id|显示文字）</label>
+                        <textarea id="cfg_fc2Links" rows="4" placeholder="news|行业资讯&#10;tech|技术干货&#10;projects|项目案例&#10;resources|学习资源"
+                                  style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">${escapeHtml(cfg.footerCol2Links || 'news|行业资讯,tech|技术干货,projects|项目案例,resources|学习资源')}</textarea>
+                    </div>
+                </div>
+                <div class="config-card">
+                    <h3>&#128221; 页脚列3（关于我们）</h3>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" id="cfg_fc3Title" value="${escapeHtml(cfg.footerCol3Title || '关于我们')}"
+                               style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">
+                    </div>
+                    <div class="form-group">
+                        <label>链接（每行一条，格式：id|显示文字）</label>
+                        <textarea id="cfg_fc3Links" rows="4" placeholder="about|平台介绍&#10;contact|联系我们"
+                                  style="width:100%;padding:10px 14px;border:1px solid #d9d9d9;border-radius:8px;background:#fafafa;font-size:14px;">${escapeHtml(cfg.footerCol3Links || 'about|平台介绍,contact|联系我们')}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 保存按钮 -->
         <div style="margin-top:32px; text-align:center;">
             <button class="btn btn-primary" onclick="saveSiteConfigData()" style="padding:12px 48px;font-size:16px;">&#128190; 保存全部设置</button>
+            <p style="font-size:12px;color:#999;margin-top:12px;">保存后前台刷新页面即可生效</p>
         </div>
     `;
 }
@@ -1037,12 +1479,137 @@ function removeBgImage(key) {
     showToast('图片已移除', 'success');
 }
 
+// Logo上传
+async function handleLogoUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    try {
+        const base64 = await fileToBase64(file);
+        const compressed = await compressImage(base64, 200, 0.8);
+        const cfg = getSiteConfig();
+        cfg.logoImg = compressed;
+        saveSiteConfig(cfg);
+        const preview = document.getElementById('logoPreview');
+        preview.src = compressed;
+        preview.style.display = 'block';
+        preview.classList.add('show');
+        document.getElementById('logoRemove').classList.add('show');
+        showToast('Logo已保存', 'success');
+    } catch(e) {
+        showToast('Logo上传失败', 'error');
+    }
+}
+
+function removeLogo() {
+    const cfg = getSiteConfig();
+    cfg.logoImg = '';
+    saveSiteConfig(cfg);
+    const preview = document.getElementById('logoPreview');
+    preview.style.display = 'none';
+    preview.classList.remove('show');
+    document.getElementById('logoRemove').classList.remove('show');
+    showToast('Logo已移除', 'success');
+}
+
 function saveSiteConfigData() {
     const cfg = getSiteConfig();
+
+    // 基本信息
+    cfg.siteName = document.getElementById('cfg_siteName').value.trim() || 'IoT资讯';
+    cfg.siteDesc = document.getElementById('cfg_siteDesc').value.trim();
+
+    // Logo
+    const logoIcon = document.getElementById('cfg_logoIcon').value.trim();
+    if (logoIcon) cfg.logoIcon = logoIcon;
+
+    // Hero
+    cfg.heroH1 = document.getElementById('cfg_heroH1').value.trim() || '探索物联网的无限可能';
+    cfg.heroP = document.getElementById('cfg_heroP').value.trim() || '连接万物，智创未来';
+    cfg.heroText = document.getElementById('cfg_heroText').value;
+    cfg.heroSubText = document.getElementById('cfg_heroSubText').value;
+    cfg.heroH1Size = document.getElementById('cfg_heroH1Size').value.trim() || '52px';
+    cfg.heroPSize = document.getElementById('cfg_heroPSize').value.trim() || '20px';
+    cfg.heroCanvas = document.getElementById('cfg_heroCanvas').checked;
+
+    // 导航栏
+    const navBgColor = document.getElementById('cfg_navBg').value;
+    const navBgText = document.getElementById('cfg_navBg_text').value.trim();
+    cfg.navBg = navBgText || navBgColor;
+
+    const navTextColor = document.getElementById('cfg_navText').value;
+    const navTextText = document.getElementById('cfg_navText_text').value.trim();
+    cfg.navText = navTextText || navTextColor;
+
+    cfg.navHoverBg = document.getElementById('cfg_navHoverBg').value;
+    cfg.navActiveText = document.getElementById('cfg_navActiveText').value;
+
+    // 字体
+    const fontBody = document.getElementById('cfg_fontBody').value.trim();
+    const fontFallback = document.getElementById('cfg_fontFallback').checked;
+    if (fontBody) {
+        cfg.colors.fontBody = fontFallback ? fontBody + ', -apple-system, BlinkMacSystemFont, sans-serif' : fontBody;
+    }
+    cfg.sectionH2Size = document.getElementById('cfg_sectionH2Size').value.trim() || '36px';
+    cfg.sectionPSize = document.getElementById('cfg_sectionPSize').value.trim() || '16px';
+    cfg.cardTitleSize = document.getElementById('cfg_cardTitleSize').value.trim() || '18px';
+
+    // 颜色主题
+    cfg.colors.primary = document.getElementById('cfg_primary').value;
+    cfg.colors.accent = document.getElementById('cfg_accent').value;
+    cfg.colors.bodyBg = document.getElementById('cfg_bodyBg').value;
+    cfg.colors.textSecondary = document.getElementById('cfg_textSecondary').value;
+    cfg.colors.cardBg = document.getElementById('cfg_cardBg').value;
+    cfg.colors.cardRadius = document.getElementById('cfg_cardRadius').value.trim() || '16px';
+    cfg.colors.aboutFeatBg = document.getElementById('cfg_aboutFeatBg').value;
+
+    // 联系我们
     cfg.email = document.getElementById('cfg_email').value.trim();
     cfg.phone = document.getElementById('cfg_phone').value.trim();
     cfg.address = document.getElementById('cfg_address').value.trim();
     cfg.wechat = document.getElementById('cfg_wechat').value.trim();
+
+    // 关于我们
+    cfg.aboutH1 = document.getElementById('cfg_aboutH1').value.trim();
+    cfg.aboutContent = document.getElementById('cfg_aboutContent').value.trim();
+    cfg.aboutFeature1Title = document.getElementById('cfg_af1Title').value.trim();
+    cfg.aboutFeature1Desc = document.getElementById('cfg_af1Desc').value.trim();
+    cfg.aboutFeature1Icon = document.getElementById('cfg_af1Icon').value.trim();
+    cfg.aboutFeature2Title = document.getElementById('cfg_af2Title').value.trim();
+    cfg.aboutFeature2Desc = document.getElementById('cfg_af2Desc').value.trim();
+    cfg.aboutFeature2Icon = document.getElementById('cfg_af2Icon').value.trim();
+    cfg.aboutFeature3Title = document.getElementById('cfg_af3Title').value.trim();
+    cfg.aboutFeature3Desc = document.getElementById('cfg_af3Desc').value.trim();
+    cfg.aboutFeature3Icon = document.getElementById('cfg_af3Icon').value.trim();
+    cfg.aboutFeature4Title = document.getElementById('cfg_af4Title').value.trim();
+    cfg.aboutFeature4Desc = document.getElementById('cfg_af4Desc').value.trim();
+    cfg.aboutFeature4Icon = document.getElementById('cfg_af4Icon').value.trim();
+
+    // 页脚
+    const footerBgColor = document.getElementById('cfg_footerBg').value;
+    const footerBgText = document.getElementById('cfg_footerBg_text')?.value.trim();
+    cfg.footerBg = footerBgText || footerBgColor;
+
+    const footerTextColor = document.getElementById('cfg_footerText').value;
+    const footerTextText = document.getElementById('cfg_footerText_text')?.value.trim();
+    cfg.footerText = footerTextText || footerTextColor;
+
+    cfg.footerHeading = document.getElementById('cfg_footerHeading').value;
+    cfg.footerCol1Title = document.getElementById('cfg_fc1Title').value.trim();
+    cfg.footerCol1Desc = document.getElementById('cfg_fc1Desc').value.trim();
+
+    // 页脚链接解析
+    const fc2Raw = document.getElementById('cfg_fc2Links').value.trim();
+    cfg.footerCol2Links = fc2Raw ? fc2Raw.split(',').map(s => {
+        const p = s.split('|');
+        return { target: p[0], text: p[1] || p[0] };
+    }) : [];
+
+    const fc3Raw = document.getElementById('cfg_fc3Links').value.trim();
+    cfg.footerCol3Links = fc3Raw ? fc3Raw.split(',').map(s => {
+        const p = s.split('|');
+        return { target: p[0], text: p[1] || p[0] };
+    }) : [];
+
     saveSiteConfig(cfg);
     showToast('网站设置已保存！前台刷新即可生效', 'success');
 }
